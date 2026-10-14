@@ -25,7 +25,7 @@ findings. On 2026-10-14 the owner also explicitly approved their existing email
 for public author/committer metadata. That complete identity is verified locally;
 GitHub no-reply is optional. The address is not duplicated here as a security
 contact. Package metadata uses the selected destination. GitHub Private
-Vulnerability Reporting is selected but has not been enabled in a remote repository.
+Vulnerability Reporting is enabled and checked in the public repository.
 
 Coverage is bounded: no guarantee against every encoding or image steganography,
 and not every small ICNS layer was separately viewed. Runtime document/log/account
@@ -34,4 +34,5 @@ repository metadata, attachments and future issues/logs need separate checks.
 
 Do not publish private working directories, full review receipts, provider logs,
 account files or business documents. Retain public upstream attribution and
-vendor notices. No public push is authorized by this review summary.
+vendor notices. This review summary is not publication authorization; the owner
+separately authorized source publication on 2026-10-14.

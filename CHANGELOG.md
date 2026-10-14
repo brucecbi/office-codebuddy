@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.2.0-preview.4 — 2026-10-14 — GitHub source publication
+
+- Owner authorized source publication at brucecbi/office-codebuddy. Created the
+  independent initial commit and inspected its real author/committer identity;
+  no private development history is imported.
+- Established the public repository and enabled GitHub Private Vulnerability
+  Reporting; verified the reporting entry and updated installation/security docs.
+- Retained original MIT attribution, exact pinned dependencies, runtime and assets.
+  Rechecked offline tests, formatting, allowlist and actual staged blobs for the
+  publication documentation. No App/DMG, Windows acceptance or new native E2E claim.
+
 ## 0.2.0-preview.4 — 2026-10-14 — public commit identity approval
 
 - The owner approved a complete public author/committer identity using their

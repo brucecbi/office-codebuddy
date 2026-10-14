@@ -1,8 +1,8 @@
 # Contributing
 
-Office CodeBuddy's selected repository is
+Office CodeBuddy's repository is
 [brucecbi/office-codebuddy](https://github.com/brucecbi/office-codebuddy).
-Use its issues for non-sensitive discussion after publication. Follow
+Use its issues for non-sensitive discussion. Follow
 [SECURITY.md](SECURITY.md) for private vulnerability reporting.
 
 Please discuss substantial changes before implementing them. Work on a feature
@@ -18,5 +18,5 @@ Do not add credentials, private paths, accounts, raw session data, business
 screenshots, vendor binaries or copied third-party source without review. Do not
 replace write approvals or uncertain-result checks with prompt-only assurances.
 
-There is no configured remote or CI in this candidate. Publication and CI setup
-require separate owner approval; tests can be run locally in the meantime.
+There is no configured CI in this source preview. Run tests locally; changes to
+CI, public releases or repository settings require separate maintainer approval.

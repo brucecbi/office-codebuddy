@@ -5,7 +5,7 @@ The upstream MIT copyright notice is retained verbatim in LICENSE.
 
 This derivative's public project name is **Office CodeBuddy**, with selected
 repository [brucecbi/office-codebuddy](https://github.com/brucecbi/office-codebuddy).
-That destination is prepared locally and has not yet been published.
+This repository publishes a macOS Developer Preview of the derivative source.
 
 This candidate derives from a local development snapshot with commit identifier
 `30ff3f8ef9018a0858269ab13947c7400fd0838e`. That identifier describes the private

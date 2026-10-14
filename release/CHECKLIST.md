@@ -1,6 +1,7 @@
 # Release checklist — 0.2.0-preview.4
 
-**Status: local source candidate; NOT PUBLISHED. No remote or CI configured.**
+**Scope: macOS Developer Preview source; GitHub publication authorized on
+2026-10-14. No CI configured.**
 
 Read [license scope decision](LICENSE-DECISION.md). Source publication, provider
 use and a vendor-containing App are separate decisions.
@@ -15,9 +16,10 @@ scope memo remains prior evidence, without a new vendor-payload clearance claim.
 The local Git preparation is a documentation/package-metadata derivative of that
 ZIP, with its own manifest/tree identity. The vendor-contact privacy question is
 resolved. The owner selected Office CodeBuddy, brucecbi/office-codebuddy and GitHub
-Private Vulnerability Reporting. The repository/reporting feature remain pending
-creation and enablement. On October 14 the owner approved the complete public
-commit identity using their existing email; GitHub no-reply is optional.
+Private Vulnerability Reporting. The public repository is established and its
+private reporting feature is enabled and checked. On October 14 the owner
+approved the complete public commit identity using their existing email and
+authorized source push; GitHub no-reply is optional.
 
 ## Source-only license and privacy preparation
 
@@ -70,15 +72,16 @@ commit identity using their existing email; GitHub no-reply is optional.
       synthetic serial CLI checks for the runtime repairs; native and simulated
       checks remain distinguished. No installed-App update or push.
 
-## Before a public push (not authorized by this task)
+## GitHub source publication checks — authorized 2026-10-14
 
-- [ ] Approve exact candidate hashes and the source-only scope. Ownership confirmation
-      and selected MIT license are already recorded; no vendor grant is inferred.
+- [x] Owner approves this source-only preview and publication execution; bind exact
+      commit/tree/manifest hashes in the local publication receipt. No vendor grant
+      is inferred and no additional binary payload is included.
 - [x] Select GitHub owner/name and private security-reporting channel: repository
       brucecbi/office-codebuddy, with GitHub Private Vulnerability Reporting.
-      README/package/security metadata use this selected, unpublished destination.
-- [ ] Establish the repository and enable/verify its private reporting form when
-      separately authorized; do not describe the planned channel as already active.
+      README/package/security metadata use this destination.
+- [x] Establish the public repository and enable/check its private reporting entry;
+      no synthetic vulnerability report is submitted.
 - [x] Initialize a new Git repository from **only** this reviewed source candidate.
       Do not import private Git history, parent evidence directory or node_modules.
 - [x] Re-run release check and inspect the exact staged tree after documentation
@@ -87,10 +90,13 @@ commit identity using their existing email; GitHub no-reply is optional.
 - [x] Receive and verify the complete owner-approved public email for both author
       and committer in local Git configuration; no unapproved identity is inherited.
       The owner explicitly chose their existing email instead of GitHub no-reply.
-- [ ] Create and inspect the first commit only after identity confirmation. A staged
-      tree has no commit author metadata and does not complete this gate by itself.
+- [x] Create and inspect the independent initial commit; actual author/committer
+      match the approved identity and its tree matches the reviewed source.
 - [x] Retain Developer Preview/NOT_RUN labels and the untested clean-machine boundary.
-- [ ] Explicitly authorize public push. No automatic release/npm publish/CI enablement.
+- [x] Owner explicitly authorizes public source push. No npm publication or CI setup.
+
+The exact remote HEAD/tree and push outcome are read back and recorded in the local
+publication receipt; approval and checklist preparation alone do not prove a push.
 
 Another-machine validation is required before promising supported/reproducible
 installation; it is not a copyright prerequisite for a candid source-review

@@ -1,5 +1,18 @@
 # Candidate test summary — 0.2.0-preview.4 — 2026-10-12
 
+## GitHub publication checks — 2026-10-14
+
+The owner authorized publication execution and source push. The independent
+initial commit was created and its actual author/committer identity and 200-file
+tree were checked against the approved candidate. GitHub Private Vulnerability
+Reporting is enabled and its public entry checked without submitting a report.
+
+Publication documentation is updated, with unchanged runtime, tests, assets and
+dependencies. Required offline/format/release and staged-blob checks are repeated
+for this final documentation; exact final commit/tree, remote readback and
+preservation results are bound in the local publication receipt. Native tests
+remain the historical results below; no App/DMG or Windows acceptance is added.
+
 ## Public commit identity approval — 2026-10-14
 
 The owner approved the full public author/committer identity with their existing

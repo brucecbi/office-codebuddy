@@ -4,12 +4,12 @@ Local Office add-in bridge for **Microsoft Word and Excel**, using your own
 CodeBuddy account. Version **0.2.0-preview.4**. macOS-first, source-only preview;
 not a signed installer or a promise of cross-platform compatibility.
 
-Planned repository: [brucecbi/office-codebuddy](https://github.com/brucecbi/office-codebuddy).
+Repository: [brucecbi/office-codebuddy](https://github.com/brucecbi/office-codebuddy).
 This independent community project is based on Draftspect by Leonard Hope.
 The preview retains Draftspect's internal package, launcher and add-in identifiers.
 
-**Candidate status:** prepared locally; not published. Read the
-[release checklist](release/CHECKLIST.md) before any public push.
+**Release scope:** macOS Developer Preview source. See the
+[release checklist](release/CHECKLIST.md) for validation and distribution limits.
 
 ## What it does
 
@@ -37,10 +37,14 @@ of every document. Use new synthetic files and backups for evaluation.
 
 ## Get started
 
-The repository destination above has been selected; this candidate is still
-unpublished. Use this source directory or a reviewed source archive until the
-repository is available. Installation and support boundaries below remain the
-same for this documentation revision.
+Get the source from this repository:
+
+```sh
+git clone https://github.com/brucecbi/office-codebuddy.git
+cd office-codebuddy
+```
+
+Installation and support boundaries below apply to this source preview.
 
 1. Read [installation](docs/INSTALL.md) and [privacy/security](docs/SECURITY-AND-PRIVACY.md).
 2. Prepare Node **22.12.0 or newer**, current desktop Office, and your own properly
@@ -94,5 +98,5 @@ The source ZIP includes project icons and synthetic Office fixtures, but no
 vendor code/binaries, npm dependencies or private Git history.
 
 Contributions: [CONTRIBUTING.md](CONTRIBUTING.md). Security: [SECURITY.md](SECURITY.md).
-GitHub Private Vulnerability Reporting is the selected security channel and will
-be enabled and verified when the repository is established.
+GitHub Private Vulnerability Reporting is enabled. Use the repository's
+Security / Advisories page to report security issues privately.

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "candidateVersion": "0.2.0-preview.4",
-  "scope": "Unpublished source-only Office CodeBuddy public-identity approval follow-up. Repository and public author/committer identity are owner-approved and configured locally. No-reply is optional. First actual commit review, remote creation, private reporting enablement and push remain unexecuted. No vendor payload or private history imported.",
+  "scope": "Source-only Office CodeBuddy macOS Developer Preview. Owner authorized public publication on 2026-10-14. Independent history and approved public author/committer identity; GitHub private reporting enabled and checked. Exact published commit/tree and remote readback are recorded in the local publication receipt. No vendor payload or private development history imported; no App/DMG distribution, CI or npm publication.",
   "files": [
     {
       "path": ".gitignore",
@@ -155,8 +155,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 12432,
-      "sha256": "db2ddcb394aab174b76cd5b27e1c2a8f01d895e3b9eac920d177e70e274007c1"
+      "bytes": 13112,
+      "sha256": "35df9ec3cfcb3454e11d403fe85b93ec182de26f371fa31ad4c845c1a0881c4d"
     },
     {
       "path": "CLAUDE.md",
@@ -165,8 +165,8 @@
     },
     {
       "path": "CONTRIBUTING.md",
-      "bytes": 1178,
-      "sha256": "134ea81b61d3175808a44168afda7b03866aaeb826705399d8c56eee14978877"
+      "bytes": 1157,
+      "sha256": "14ba2aa2b2eabeefdb8fa9c8560ab100b90403231fdb21c1385e1b664353f5ee"
     },
     {
       "path": "daemon/acceptance-profile.mjs",
@@ -395,13 +395,13 @@
     },
     {
       "path": "README.md",
-      "bytes": 6937,
-      "sha256": "e42c117b458390aec94282e60c3e20e15dde820c667e071ae67eae12af674f98"
+      "bytes": 6865,
+      "sha256": "edc49495c021c3daa0227df96eed7eb63fe1b66e5a4d29265f8dafbc1bd481fa"
     },
     {
       "path": "release/CHECKLIST.md",
-      "bytes": 8593,
-      "sha256": "b98f2930f8a7317cfbc6c1092b9ccf0fa20643b96eb7d9015d3be8c598a7a273"
+      "bytes": 8845,
+      "sha256": "f94d131389b040dfb403882c460ef4e4990541eb8b909b20d39d685040b6c544"
     },
     {
       "path": "release/DEPENDENCY-FOLLOWUP.md",
@@ -430,8 +430,8 @@
     },
     {
       "path": "release/TEST-SUMMARY.md",
-      "bytes": 38760,
-      "sha256": "c28ad208eadf5ae46d587ab41fcaa4d1e8678c13e8fd29f4ec434474e5b736cd"
+      "bytes": 39517,
+      "sha256": "1ef2a0efe73497a7948fa580480df12910b9f87213f5a3b021345a30e0d911ac"
     },
     {
       "path": "release/VENDOR-CLARIFICATION.md",
@@ -495,8 +495,8 @@
     },
     {
       "path": "SECURITY.md",
-      "bytes": 1272,
-      "sha256": "59d5a87698ffdb4346d71c3e6510e9f07181ec32ec02e199c0a0f23251aabf54"
+      "bytes": 1120,
+      "sha256": "4d7719a82a34a42a280fb40102004bea89203660206e48e450192158da49d6dd"
     },
     {
       "path": "taskpane/excel/index.html",
@@ -990,13 +990,13 @@
     },
     {
       "path": "UPSTREAM.md",
-      "bytes": 1606,
-      "sha256": "028ad84e87b7063a304772c6904ae9100e149332011b36586629035287f05ca1"
+      "bytes": 1615,
+      "sha256": "a6aae0a28486217b677bce8550c9cd75551e93776e5e84fa32da417e4a1d58b2"
     },
     {
       "path": "release/PRIVACY-REVIEW.md",
-      "bytes": 2284,
-      "sha256": "2125439bedc6e7f0b98c44627fad96a3b4a551e4124c8e73fefac0e5ea9d188b"
+      "bytes": 2339,
+      "sha256": "68140dd059c54ddee24b15dbe18121e1dc2f856f852006b8ce16e4adb63e6323"
     }
   ]
 }
