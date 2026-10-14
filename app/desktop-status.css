@@ -1,0 +1,100 @@
+:root {
+  color-scheme: light;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #18252b;
+  background: #f5f7f8;
+}
+body {
+  margin: 0;
+}
+main {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 28px;
+}
+h1 {
+  margin: 3px 0 22px;
+  font-size: 30px;
+  letter-spacing: -0.6px;
+}
+.eyebrow {
+  margin: 0;
+  font-size: 12px;
+  color: #46616c;
+}
+.card {
+  background: #fff;
+  border: 1px solid #d9e3e6;
+  border-radius: 12px;
+  padding: 18px;
+}
+h2 {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 500;
+  color: #50616a;
+}
+#status {
+  margin: 10px 0;
+  font-size: 19px;
+  font-weight: 600;
+}
+#runtime,
+#detail {
+  margin: 7px 0;
+  font-size: 13px;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+#error {
+  background: #fff2f0;
+  color: #942e25;
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+.actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 18px;
+}
+button {
+  font: inherit;
+  font-size: 13px;
+  padding: 10px 5px;
+  border: 1px solid #b9c8cc;
+  border-radius: 7px;
+  background: white;
+  color: #1d3e48;
+  cursor: pointer;
+}
+button:hover {
+  background: #eaf2f2;
+}
+button:focus-visible {
+  outline: 3px solid #258477;
+  outline-offset: 2px;
+}
+button:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
+button[data-action="start"] {
+  background: #176b5e;
+  border-color: #176b5e;
+  color: white;
+}
+#action-result {
+  min-height: 20px;
+  font-size: 13px;
+  color: #3b5d64;
+}
+footer {
+  font-size: 12px;
+  color: #66787f;
+  line-height: 1.65;
+}

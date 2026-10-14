@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "reviewedAt": "2026-10-10T15:06:22.876Z",
+  "scope": "Exact preceding macOS arm64 fresh install, reused read-only. Vendor code/binaries are not in the source archive; facts are not binary clearance.",
+  "files": [
+    {
+      "path": "node_modules/@tencent-ai/agent-sdk/package.json",
+      "bytes": 735,
+      "sha256": "0fe2ebb84e9d34cf7b23cb524aa5664a04afba3d3f70e9c8a36086ee10ff42d8"
+    },
+    {
+      "path": "node_modules/@tencent-ai/agent-sdk/cli/LICENSE.txt",
+      "bytes": 1062,
+      "sha256": "fc68abd7dfba71c364455b155afbf69ae2684350e163248f6069d8e6fd380c26"
+    },
+    {
+      "path": "node_modules/@tencent-ai/agent-sdk/cli/vendor/toybox-macos/LICENSE",
+      "bytes": 666,
+      "sha256": "948039f91e7e23916019047a035c69214447323c5fc272aefc0fd21e505bf41d"
+    },
+    {
+      "path": "node_modules/@tencent-ai/agent-sdk/cli/vendor/zsh-macos/LICENSE",
+      "bytes": 1963,
+      "sha256": "d06fdf3ef9b1ec69d6b9e170b0a9516fbad3523261ff1668bde3bfea6e0ef5f5"
+    },
+    {
+      "path": "node_modules/@tencent-ai/agent-sdk/cli/vendor/zsh-macos/bin/zsh",
+      "bytes": 1920800,
+      "sha256": "a773ee7332a506560eaab47272c182744ea5563ff899ea94ce0069ad7b68080d"
+    },
+    {
+      "path": "node_modules/@tencent-ai/agent-sdk/cli/vendor/ripgrep/COPYING",
+      "bytes": 126,
+      "sha256": "01c266bced4a434da0051174d6bee16a4c82cf634e2679b6155d40d75012390f"
+    },
+    {
+      "path": "node_modules/@tencent-ai/agent-sdk/cli/vendor/ripgrep/arm64-darwin/rg",
+      "bytes": 6482768,
+      "sha256": "0c299e894f59350379217e52cee06bf86c2606f6193d92161e5359a49a1a5508"
+    },
+    {
+      "path": "node_modules/@anthropic-ai/claude-agent-sdk/LICENSE.md",
+      "bytes": 147,
+      "sha256": "8ce94b9478bb9868f9641f818e06cd722fbe55d4c22e2d2ed11971b20146173a"
+    },
+    {
+      "path": "node_modules/@anthropic-ai/claude-agent-sdk-darwin-arm64/LICENSE.md",
+      "bytes": 147,
+      "sha256": "8ce94b9478bb9868f9641f818e06cd722fbe55d4c22e2d2ed11971b20146173a"
+    },
+    {
+      "path": "node_modules/electron/package.json",
+      "bytes": 745,
+      "sha256": "813ce151efb4182e1a3574964070eb3994fafe5a38e08720295b649c23ca84a5"
+    },
+    {
+      "path": "node_modules/electron/install.js",
+      "bytes": 3274,
+      "sha256": "5a83199076ae20cfe57576a984e31b92890a2ae4e0759454bb6df4f9e7f47460"
+    },
+    {
+      "path": "node_modules/electron/dist/LICENSE",
+      "bytes": 1096,
+      "sha256": "5154e165bd6c2cc0cfbcd8916498c7abab0497923bafcd5cb07673fe8480087d"
+    },
+    {
+      "path": "node_modules/electron/dist/LICENSES.chromium.html",
+      "bytes": 20008860,
+      "sha256": "ca0a3f71df977796bf39a99472783c1ce9378bf4d8f4142a95048c3843980415"
+    },
+    {
+      "path": "node_modules/@electron-internal/extract-zip/package.json",
+      "bytes": 2095,
+      "sha256": "438071218e7acba31a460d5c8ebb9a7dc4a8ce5c0cb05f9c706f5b4e1323884c"
+    },
+    {
+      "path": "node_modules/@electron-internal/extract-zip/README.md",
+      "bytes": 3605,
+      "sha256": "61090965f7edb896c4492e9a090bec14e8e6abe2322480e4d2acde2a478c7500"
+    }
+  ],
+  "codebuddy": {
+    "version": "0.3.243",
+    "metadataLicense": "MIT",
+    "rootLicensePresent": false,
+    "cliNotice": "MIT-form grant; whole-package/vendor scope needs clarification if redistributed",
+    "vendorNoticeFiles": [
+      "cli/LICENSE.txt",
+      "cli/vendor/ripgrep/COPYING",
+      "cli/vendor/toybox-macos/LICENSE",
+      "cli/vendor/zsh-macos/LICENSE"
+    ],
+    "ripgrep": {
+      "inspectedPlatform": "arm64-darwin",
+      "reportedVersion": "14.1.1 (rev 4649aa9700)",
+      "reportedPcre2": "10.43",
+      "probe": "rg --version only; no account/model/document access",
+      "fullMitOrUnlicenseTextInVendorDirectory": false,
+      "otherPlatforms": "NOT_RUN",
+      "scope": "COPYING selects dual licensing but is not the full notice. Review upstream exact-version text, compiled components, and PCRE2 binary-chain exception before bundling."
+    },
+    "zshDirectoryFiles": ["LICENSE", "bin/zsh"],
+    "zshBinaryProvenance": "NOT_FULLY_AUDITED"
+  },
+  "extractZip": {
+    "version": "1.0.5",
+    "declaredLicense": "BSD-2-Clause",
+    "pinnedGitHead": "b83e459fd04c53b0a1c8438a6792df8f64be47fc",
+    "rootLicensePresent": false,
+    "usage": "electron/install.js imports extract; no project runtime import found",
+    "laterLicenseChange": "https://github.com/electron/extract-zip/pull/19",
+    "laterChangeDate": "2026-09-10",
+    "scope": "Later MIT change is not silently applied to this pinned install-time native package; only redistribution of this component triggers its unresolved notice review."
+  },
+  "sources": [
+    {
+      "url": "https://www.codebuddy.ai/docs/cli/sdk",
+      "scope": "SDK integration intent, not a complete redistribution grant"
+    },
+    {
+      "url": "https://www.codebuddy.cn/document/term",
+      "scope": "Public English international agreement sample; account-specific applicable agreement NOT_REVIEWED"
+    },
+    {
+      "url": "https://www.codebuddy.ai/document/open-source-attribution",
+      "scope": "Lists web libraries; not an exact SDK 0.3.243 payload inventory"
+    },
+    {
+      "url": "https://code.claude.com/docs/en/legal-and-compliance",
+      "scope": "Conditional unmodified CLI distribution and credential requirements"
+    },
+    {
+      "url": "https://support.claude.com/en/articles/15036540-use-the-claude-agent-sdk-with-your-claude-plan",
+      "scope": "October 7 2026 subscription/SDK update"
+    },
+    {
+      "url": "https://github.com/electron/extract-zip/pull/19",
+      "scope": "Later relicensing metadata and history, not a pinned-version grant"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/BurntSushi/ripgrep/14.1.1/LICENSE-MIT",
+      "scope": "Upstream version notice, compiled SDK vendor provenance not established by a version string"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/PCRE2Project/pcre2/pcre2-10.43/LICENCE",
+      "scope": "BSD terms with binary-library-chain exception"
+    }
+  ]
+}

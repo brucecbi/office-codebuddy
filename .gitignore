@@ -1,0 +1,17 @@
+node_modules/
+dist/
+.DS_Store
+.env*
+*.log
+*.pem
+*.key
+*.p12
+*.pfx
+*.app/
+*.dmg
+.claude/
+.codebuddy/
+.draftspect*/
+sessions.json
+archives/
+~$*

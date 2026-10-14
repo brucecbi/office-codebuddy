@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<OfficeApp
+  xmlns="http://schemas.microsoft.com/office/appforoffice/1.1"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0"
+  xsi:type="TaskPaneApp">
+
+  <Id>4b5861d6-18ee-4d4a-b9ee-d43d7da80ff4</Id>
+  <Version>1.0.0.0</Version>
+  <ProviderName>Draftspect</ProviderName>
+  <DefaultLocale>en-US</DefaultLocale>
+  <DisplayName DefaultValue="Draftspect for Excel" />
+  <Description DefaultValue="Draftspect Developer Preview for Excel — read, analyze and revise the active workbook through your selected agent provider. Office-only tools by default." />
+  <IconUrl DefaultValue="http://127.0.0.1:47834/icon-32.png" />
+  <HighResolutionIconUrl DefaultValue="http://127.0.0.1:47834/icon-64.png" />
+  <SupportUrl DefaultValue="http://127.0.0.1:47834/" />
+
+  <AppDomains>
+    <AppDomain>http://127.0.0.1:47834</AppDomain>
+  </AppDomains>
+
+  <Hosts>
+    <Host Name="Workbook" />
+  </Hosts>
+
+  <!--
+    Minimum Excel API version. Required for getUsedRangeOrNullObject and
+    the *OrNullObject helpers. The onSelectionChanged event (1.7+) is
+    wired up inside a try/.catch in taskpane.js, so its absence
+    degrades selection-tracking gracefully — no need to require 1.7.
+  -->
+  <Requirements>
+    <Sets DefaultMinVersion="1.4">
+      <Set Name="ExcelApi" MinVersion="1.4" />
+    </Sets>
+  </Requirements>
+
+  <DefaultSettings>
+    <SourceLocation DefaultValue="http://127.0.0.1:47834/excel/index.html" />
+  </DefaultSettings>
+
+  <Permissions>ReadWriteDocument</Permissions>
+
+  <VersionOverrides
+    xmlns="http://schemas.microsoft.com/office/taskpaneappversionoverrides"
+    xsi:type="VersionOverridesV1_0">
+    <Requirements>
+      <bt:Sets DefaultMinVersion="1.4">
+        <bt:Set Name="ExcelApi" MinVersion="1.4" />
+      </bt:Sets>
+    </Requirements>
+    <Hosts>
+      <Host xsi:type="Workbook">
+        <DesktopFormFactor>
+          <FunctionFile resid="Draftspect.Excel.Taskpane.Url" />
+          <ExtensionPoint xsi:type="PrimaryCommandSurface">
+            <OfficeTab id="TabHome">
+              <Group id="Draftspect.Excel.Group">
+                <Label resid="Draftspect.Excel.Group.Label" />
+                <Icon>
+                  <bt:Image size="16" resid="Draftspect.Excel.Icon32" />
+                  <bt:Image size="32" resid="Draftspect.Excel.Icon32" />
+                  <bt:Image size="80" resid="Draftspect.Excel.Icon64" />
+                </Icon>
+                <Control xsi:type="Button" id="Draftspect.Excel.ShowTaskpane">
+                  <Label resid="Draftspect.Excel.Button.Label" />
+                  <Supertip>
+                    <Title resid="Draftspect.Excel.Button.Label" />
+                    <Description resid="Draftspect.Excel.Button.Tip" />
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="Draftspect.Excel.Icon32" />
+                    <bt:Image size="32" resid="Draftspect.Excel.Icon32" />
+                    <bt:Image size="80" resid="Draftspect.Excel.Icon64" />
+                  </Icon>
+                  <Action xsi:type="ShowTaskpane">
+                    <TaskpaneId>Draftspect.Excel.Pane</TaskpaneId>
+                    <SourceLocation resid="Draftspect.Excel.Taskpane.Url" />
+                  </Action>
+                </Control>
+              </Group>
+            </OfficeTab>
+          </ExtensionPoint>
+        </DesktopFormFactor>
+      </Host>
+    </Hosts>
+    <Resources>
+      <bt:Images>
+        <bt:Image id="Draftspect.Excel.Icon32" DefaultValue="http://127.0.0.1:47834/icon-32.png" />
+        <bt:Image id="Draftspect.Excel.Icon64" DefaultValue="http://127.0.0.1:47834/icon-64.png" />
+      </bt:Images>
+      <bt:Urls>
+        <bt:Url id="Draftspect.Excel.Taskpane.Url" DefaultValue="http://127.0.0.1:47834/excel/index.html" />
+      </bt:Urls>
+      <bt:ShortStrings>
+        <bt:String id="Draftspect.Excel.Group.Label" DefaultValue="Draftspect" />
+        <bt:String id="Draftspect.Excel.Button.Label" DefaultValue="显示 Draftspect 窗格" />
+      </bt:ShortStrings>
+      <bt:LongStrings>
+        <bt:String id="Draftspect.Excel.Button.Tip" DefaultValue="打开 Draftspect 窗格以读取、分析和修订当前 Excel 工作簿。" />
+      </bt:LongStrings>
+    </Resources>
+  </VersionOverrides>
+</OfficeApp>

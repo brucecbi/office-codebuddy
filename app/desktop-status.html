@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'none'; img-src 'none'; font-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Draftspect</title>
+    <link rel="stylesheet" href="./desktop-status.css" />
+    <script src="./desktop-status.js" defer></script>
+  </head>
+  <body>
+    <main>
+      <header>
+        <p class="eyebrow">本机 Word / Excel 助手</p>
+        <h1>Draftspect</h1>
+      </header>
+      <section class="card" aria-labelledby="status-heading">
+        <h2 id="status-heading">本地服务状态</h2>
+        <p id="status" role="status" aria-live="polite">正在读取状态…</p>
+        <p id="runtime"></p>
+        <p id="detail"></p>
+        <p id="error" role="alert" hidden></p>
+      </section>
+      <section class="actions" aria-label="服务控制">
+        <button type="button" data-action="start">启动服务</button>
+        <button type="button" data-action="restart">重新启动</button>
+        <button type="button" data-action="stop">停止服务</button>
+        <button type="button" data-action="initialize-word">初始化 Word 插件</button>
+        <button type="button" data-action="initialize-excel">初始化 Excel 插件</button>
+        <button type="button" data-action="open-logs">查看日志</button>
+        <button type="button" data-action="quit">退出 Draftspect</button>
+      </section>
+      <p id="action-result" role="status" aria-live="polite"></p>
+      <footer>
+        关闭此窗口后服务继续运行。再次打开桌面快捷方式可回到这里。<br />本地服务就绪后，请在 Word /
+        Excel 中打开 Draftspect 侧边栏；manifest、侧边栏连接和模型可用性会分别检查。
+      </footer>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,1002 @@
+{
+  "schemaVersion": 1,
+  "candidateVersion": "0.2.0-preview.4",
+  "scope": "Unpublished source-only Office CodeBuddy public-identity approval follow-up. Repository and public author/committer identity are owner-approved and configured locally. No-reply is optional. First actual commit review, remote creation, private reporting enablement and push remain unexecuted. No vendor payload or private history imported.",
+  "files": [
+    {
+      "path": ".gitignore",
+      "bytes": 142,
+      "sha256": "efcf7483aef322dbff857fec2bf81459fa5829743c838a3c3480bdedda3e8f33"
+    },
+    {
+      "path": ".prettierignore",
+      "bytes": 582,
+      "sha256": "dd1fb6d979f055fd0fd425174bc5065056f16f22373f03969ab457d03f4f5725"
+    },
+    {
+      "path": ".prettierrc",
+      "bytes": 134,
+      "sha256": "9d38de03b358fb140178c08b2f610fdaccd778be706c154df1d0558211afe90d"
+    },
+    {
+      "path": "AGENTS.md",
+      "bytes": 1286,
+      "sha256": "10fab16d52fee8f8b0677116e97cbca8566ede7c070f08b8b61b4a1fcaecda92"
+    },
+    {
+      "path": "app/addin-guidance.mjs",
+      "bytes": 2256,
+      "sha256": "18fa6debbb1ef7f8a54a73a08c3ad8f53646ba3f8915865faef6c9d383578ce1"
+    },
+    {
+      "path": "app/addin-registration.mjs",
+      "bytes": 4036,
+      "sha256": "18d7d34a25b32c5b68084009cefb96d4117d45bf8634f41efe317d2c9fc47015"
+    },
+    {
+      "path": "app/assets/CodeWord.icns",
+      "bytes": 1613067,
+      "sha256": "7f5c2a37df299668b635e44e22cd31ec8e68f5cf8b2cf82e99dbf53132cd3943"
+    },
+    {
+      "path": "app/assets/excel-initialize-synthetic.xlsx",
+      "bytes": 6133,
+      "sha256": "c455fda12cb5110f46bdb0fe03ecfd127a99c364436b4756c921e3bf81ddefc0"
+    },
+    {
+      "path": "app/assets/word-initialize-synthetic.docx",
+      "bytes": 12715,
+      "sha256": "461917ce2481078671223b9f98bc268228176d00e9c9a3357bc643f7c0e90599"
+    },
+    {
+      "path": "app/desktop-lifecycle.mjs",
+      "bytes": 8510,
+      "sha256": "fe80226a658f015c3d1522032d116f50033d5994dcbfa1d94de4282ecd7652bc"
+    },
+    {
+      "path": "app/desktop-preflight.mjs",
+      "bytes": 8442,
+      "sha256": "836a9d62da99743bdee5d01ede073bfcfffa79538328e073318ba8d1c95f4a1b"
+    },
+    {
+      "path": "app/desktop-status-preload.cjs",
+      "bytes": 718,
+      "sha256": "e344ab8c44dcd8a376f20a3b0245e9be94897123abd0a946ba46a5a9d21a6564"
+    },
+    {
+      "path": "app/desktop-status-window.mjs",
+      "bytes": 9387,
+      "sha256": "d3b53a38f668251af6c9af40ac7d2152d01a83dcb9fd4fa52ec8e91122d23c4b"
+    },
+    {
+      "path": "app/desktop-status.css",
+      "bytes": 1601,
+      "sha256": "5c0650bf90019ab149d97d4d8dda4091f8cf818625e5c27801dc658557a40cd6"
+    },
+    {
+      "path": "app/desktop-status.html",
+      "bytes": 2022,
+      "sha256": "8b58a8a4e49a5d6eb22b52847539cd67382b67d130468aa67f420879e86ad7bf"
+    },
+    {
+      "path": "app/desktop-status.js",
+      "bytes": 2799,
+      "sha256": "a3a669992a922c432d46035b7204f31b1ff2a41ead009723c031b3671b1206d8"
+    },
+    {
+      "path": "app/excel-bootstrap.mjs",
+      "bytes": 3546,
+      "sha256": "9af3f2f5dc09fbccb2d763e1a20caa5153557de3f8e9beea3265a9ef56da2a23"
+    },
+    {
+      "path": "app/health-watch.mjs",
+      "bytes": 729,
+      "sha256": "ca9ba9aef8d2dd3551d75e7ae5c6182625beb31aa1b73c474206bed109f05190"
+    },
+    {
+      "path": "app/macos-excel-open.mjs",
+      "bytes": 1234,
+      "sha256": "ebf6a0770f69531495f69a36548abf87eec69c18044d60b21fb779e590247b48"
+    },
+    {
+      "path": "app/macos-launch-monitor.swift",
+      "bytes": 11317,
+      "sha256": "f661dc86dab4499d703bb39c0f5ffd285f68e87e7a94c8aff784cf2d55cb779e"
+    },
+    {
+      "path": "app/macos-launcher.swift",
+      "bytes": 18889,
+      "sha256": "c3be3acc8e9a4a729b0b5695412505cad0d016996c9b35ee493d65aea4a8943f"
+    },
+    {
+      "path": "app/main.mjs",
+      "bytes": 40776,
+      "sha256": "781a21c3609f647ceffb72340a93da2ac5c15b459b9a562d802ca8a297d666a9"
+    },
+    {
+      "path": "app/preview-registration.mjs",
+      "bytes": 4260,
+      "sha256": "3099b7cdb35831edddacd36063f3f555c44364f1029f0e1d2d448de1087fd755"
+    },
+    {
+      "path": "app/quit-barrier.mjs",
+      "bytes": 2774,
+      "sha256": "6504f2db053efba7c893096b463c817a5001d0cdd7cea03d8f4df60e0ad6a29b"
+    },
+    {
+      "path": "app/restart-backoff.mjs",
+      "bytes": 484,
+      "sha256": "a8029d60ff07a5d2c0c509bca3995ac60a33b40fc0823d795bdff5cc96bb6734"
+    },
+    {
+      "path": "app/sideload.mjs",
+      "bytes": 8612,
+      "sha256": "77ea73162b4b389ffb6332a5c3a95fe502e8cf24eddfe0fbfe1a93e15c3b1e05"
+    },
+    {
+      "path": "app/single-instance.mjs",
+      "bytes": 2520,
+      "sha256": "c3265d57c2d1e3d71c97e3ac6d280c7700d2c109d257d79d24cee6dac1efcba4"
+    },
+    {
+      "path": "app/tray-icon.png",
+      "bytes": 491,
+      "sha256": "2f45e0f3fe9aad5af80325484f19b1ff4ff0f3c327248b747cac3017dad23a39"
+    },
+    {
+      "path": "app/tray-icon@2x.png",
+      "bytes": 998,
+      "sha256": "1f7a477fb6422092926935aefed20a44fffbeb1ab3f9cb747d7ac3f55fa7f0b9"
+    },
+    {
+      "path": "app/word-bootstrap.mjs",
+      "bytes": 4150,
+      "sha256": "06d4bd543b2c08598a6183d6cc1d878dfedd1eed472c730298c84fa6be4159b2"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "bytes": 12432,
+      "sha256": "db2ddcb394aab174b76cd5b27e1c2a8f01d895e3b9eac920d177e70e274007c1"
+    },
+    {
+      "path": "CLAUDE.md",
+      "bytes": 193,
+      "sha256": "92584655de1a2eb680974c5a29364f9503901442c203ae28721453fe12fe54fb"
+    },
+    {
+      "path": "CONTRIBUTING.md",
+      "bytes": 1178,
+      "sha256": "134ea81b61d3175808a44168afda7b03866aaeb826705399d8c56eee14978877"
+    },
+    {
+      "path": "daemon/acceptance-profile.mjs",
+      "bytes": 4333,
+      "sha256": "5836bd481476f63cf313764f0c9a47072308b5453b30ab57593c81b92edc399c"
+    },
+    {
+      "path": "daemon/bridge.mjs",
+      "bytes": 26615,
+      "sha256": "08b43133472694713b392d0848c63bf6231dd58c5fdac5903bf1cb678a32c3ca"
+    },
+    {
+      "path": "daemon/context.mjs",
+      "bytes": 6431,
+      "sha256": "fa52ca0cddb91cb79d7e53ce85a90ccd3c5be03f5d00feb91ad86f1b4fd05775"
+    },
+    {
+      "path": "daemon/diag.mjs",
+      "bytes": 507,
+      "sha256": "dac693027188cb64bc20381db9dee17b25d0f78288940e73309c7368845859ba"
+    },
+    {
+      "path": "daemon/index.mjs",
+      "bytes": 69443,
+      "sha256": "cacc09af92c6ec15ad88536fe3803f309a30905139988f8c5a36c2d74b4d9b20"
+    },
+    {
+      "path": "daemon/local-transport.mjs",
+      "bytes": 8305,
+      "sha256": "c163319d0b568d81b2e6f35160f6cb36b5c57ccb78b4df7b7fb2ce716b23d508"
+    },
+    {
+      "path": "daemon/log.mjs",
+      "bytes": 876,
+      "sha256": "fe844a7c55df1c61502883e945fd58fdebe14efecbecd709026ce7b110d0ec06"
+    },
+    {
+      "path": "daemon/office-read-only.mjs",
+      "bytes": 803,
+      "sha256": "a0061b9768593b21ae82f7704ce782313a4e810155a0dbe32f56e03a0c2fc1b8"
+    },
+    {
+      "path": "daemon/office-tools.mjs",
+      "bytes": 47213,
+      "sha256": "d97df1991699dc08cf83180d85babb93165a82b4414ba7c52b70749cd2270feb"
+    },
+    {
+      "path": "daemon/permission-guard.mjs",
+      "bytes": 3086,
+      "sha256": "5dae31efe91fc92dd7a30338a4b6660e7a918dfb9230271c5cbfce17f28bb181"
+    },
+    {
+      "path": "daemon/preview-policy.mjs",
+      "bytes": 2980,
+      "sha256": "06a3cfd07d08b06ab6a60d1e56169f263ed4a36166866c605a21761135013728"
+    },
+    {
+      "path": "daemon/regular-file.mjs",
+      "bytes": 978,
+      "sha256": "28e19217af61583140380e5312d03bd5d73a2738e3201167090029a3fcbe4761"
+    },
+    {
+      "path": "daemon/runtime/close-registry.mjs",
+      "bytes": 3651,
+      "sha256": "df2a27a94b094641e7bde48e1dff135a6adfc43aa8f1cb48da8b11c2df4bae87"
+    },
+    {
+      "path": "daemon/runtime/codebuddy-process-close.mjs",
+      "bytes": 6101,
+      "sha256": "6503ed49c6015a76506d38063e6f0a9a013ceed021c53060314abfe90f384848"
+    },
+    {
+      "path": "daemon/runtime/index.mjs",
+      "bytes": 2828,
+      "sha256": "bb1d2e6e7819633dbb36f5fb8d8d3bb1eb1b666c7efd018cd3544e052e785865"
+    },
+    {
+      "path": "daemon/runtime/lifecycle.mjs",
+      "bytes": 4195,
+      "sha256": "aff20e4d6717476e851a3090e76646208f569a711599ead9f9caffab1a59599d"
+    },
+    {
+      "path": "daemon/runtime/messages.mjs",
+      "bytes": 5158,
+      "sha256": "6e015b1787b5db337cdfb6b8e76d2174ba8ced331807efc268318f9fad22ff3c"
+    },
+    {
+      "path": "daemon/runtime/model-discovery.mjs",
+      "bytes": 2662,
+      "sha256": "77134b2fa70e2c604845e7c4dd855fe8487af7639eb5ba1b87638cd52c2f13a3"
+    },
+    {
+      "path": "daemon/runtime/models.mjs",
+      "bytes": 2939,
+      "sha256": "737f490825595aa7becf5f8c348b90d210245b5aaff969d1e353460cbcd5b418"
+    },
+    {
+      "path": "daemon/runtime/render-messages.mjs",
+      "bytes": 2802,
+      "sha256": "c365044f7a7a2734e080fc10020415e2ec43d792e3cea6fc9060985dc65622a2"
+    },
+    {
+      "path": "daemon/runtime/runtime-claude.mjs",
+      "bytes": 3988,
+      "sha256": "2a4481270139b93cb4514d7da42acf61f4481206dac3405d193a3df7cca5cd11"
+    },
+    {
+      "path": "daemon/runtime/runtime-codebuddy.mjs",
+      "bytes": 10253,
+      "sha256": "3270dd7bbcb17bac4705b237938b2b500e26719556cabd8a1f7f7d950e879978"
+    },
+    {
+      "path": "daemon/runtime/turns.mjs",
+      "bytes": 4125,
+      "sha256": "a981cf8420c9bf23214bc5e6298bedaccb9aa8bb20a1d61017ee458ed5fffc1b"
+    },
+    {
+      "path": "daemon/session-archive.mjs",
+      "bytes": 7735,
+      "sha256": "d754079a22975ebc83e18c88e44b889ba44d392bc916b744575dd3a232ab5fe1"
+    },
+    {
+      "path": "daemon/session-lock.mjs",
+      "bytes": 7691,
+      "sha256": "5990d1f1366567b0a9bcca78dc4ff13713ea85d606038e76e8de9977de4aedf1"
+    },
+    {
+      "path": "daemon/session-persistence.mjs",
+      "bytes": 4458,
+      "sha256": "48f1d90509ec1ca3d1cf6f95c9d12ecccd3ff1bc40a352f8652ac50277882749"
+    },
+    {
+      "path": "daemon/session-transcript-state.mjs",
+      "bytes": 1998,
+      "sha256": "5348a825983dffa85e20666196a0056e707598004cb15e3d1b2e323f0629db9a"
+    },
+    {
+      "path": "daemon/sessions.mjs",
+      "bytes": 6442,
+      "sha256": "805c252ee3964cfb6c31f6bfdb985227851885a368958d25f9071452f452acab"
+    },
+    {
+      "path": "daemon/state-paths.mjs",
+      "bytes": 738,
+      "sha256": "e462e8a98ed08010827731256dcd5c0215a1fefa5e7fc245780ab7ddcf8453ff"
+    },
+    {
+      "path": "daemon/system-paths.mjs",
+      "bytes": 1288,
+      "sha256": "118b31d1478c367592bc43a157cb2576f3c120c83b6233314107ac624e9cbb5e"
+    },
+    {
+      "path": "daemon/system-prompt-excel.md",
+      "bytes": 2957,
+      "sha256": "f2965365294596ff93c2e6cce2776338178d4c7b98a2c6013c3e96bfb44cbe7a"
+    },
+    {
+      "path": "daemon/system-prompt-word.md",
+      "bytes": 13203,
+      "sha256": "3c6bcaa56cdbcf7c1653769dfb2139de24311dafc5fc184e32d8fdc74a13af3d"
+    },
+    {
+      "path": "daemon/system-prompt.md",
+      "bytes": 2370,
+      "sha256": "006f99e96d93e8cdde8591eb28f5bb4a22bcd190801604a8ff2d30828e966f7b"
+    },
+    {
+      "path": "daemon/transcript.mjs",
+      "bytes": 10235,
+      "sha256": "affa1e75858e0dbc936f4d16ec868d1baf64140cb5ab5e47a6a503ac54f04978"
+    },
+    {
+      "path": "daemon/workspace.mjs",
+      "bytes": 5276,
+      "sha256": "5c4119ac7efbf75ad01aad626544326b66ed640f1ea5cc39f87a0f1b996449ed"
+    },
+    {
+      "path": "docs/COMPATIBILITY.md",
+      "bytes": 4612,
+      "sha256": "8ddf0b12542d08dab37135b0818966dbddb120e4923d9f96d6b8d081cb8354b2"
+    },
+    {
+      "path": "docs/INSTALL.md",
+      "bytes": 8460,
+      "sha256": "694729813cebc114f10e6c6d46a08a39215a4c6066fa84892ded2f11f86036c1"
+    },
+    {
+      "path": "docs/RECOVERY.md",
+      "bytes": 3189,
+      "sha256": "9912a6d6a3ca257da19020f4bb10691f913432905d564c0816952b0cae765b2e"
+    },
+    {
+      "path": "docs/SECURITY-AND-PRIVACY.md",
+      "bytes": 3867,
+      "sha256": "c7465090875ea078524044f26fc57e2648c57f09e6fda78fd36ab58e0a19fae3"
+    },
+    {
+      "path": "docs/TESTING.md",
+      "bytes": 5751,
+      "sha256": "746d1b94b137da9c9ad56a174320b9364a08f8dd3029d456cf0f6d204b47891d"
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 1069,
+      "sha256": "fcbc13b564fdf92dacd6749dc42a93654f2228c5337bf656f17678ab60cbe190"
+    },
+    {
+      "path": "manifests/excel.xml",
+      "bytes": 4374,
+      "sha256": "3cfb889ebd1bac06ad22dcc8a2d315043de3fb8dba5dbd9aa9be3c7c5952553f"
+    },
+    {
+      "path": "manifests/word.xml",
+      "bytes": 4319,
+      "sha256": "51a2f1e8d54623b9c70076596118dd0dd850ee1faca669fd09e67921ef1ed7bd"
+    },
+    {
+      "path": "package-lock.json",
+      "bytes": 56094,
+      "sha256": "d5b037acbbdde1402cbd78cdc5159ce10e017509a6db0b42a51b31eee64dc421"
+    },
+    {
+      "path": "package.json",
+      "bytes": 1274,
+      "sha256": "7d8bded42e6c5a47cb658b195630ce134a3cae4e91b3cc13fdb3d4889178b9da"
+    },
+    {
+      "path": "README.md",
+      "bytes": 6937,
+      "sha256": "e42c117b458390aec94282e60c3e20e15dde820c667e071ae67eae12af674f98"
+    },
+    {
+      "path": "release/CHECKLIST.md",
+      "bytes": 8593,
+      "sha256": "b98f2930f8a7317cfbc6c1092b9ccf0fa20643b96eb7d9015d3be8c598a7a273"
+    },
+    {
+      "path": "release/DEPENDENCY-FOLLOWUP.md",
+      "bytes": 4843,
+      "sha256": "a1bf6c0677764dca17d14f9096ede6a51eecc2e9240c005f55a3b25092846abd"
+    },
+    {
+      "path": "release/dependency-inventory.json",
+      "bytes": 78558,
+      "sha256": "ff0c211dfe6f3876671a2c30627579e8b8deec7635ce4bfcb73ed526e9f1105e"
+    },
+    {
+      "path": "release/DEPENDENCY-REVIEW.md",
+      "bytes": 8339,
+      "sha256": "70715cd57e6ac9445724d65c666952b67ef05159a66a0e1e2496dd06ed2b543b"
+    },
+    {
+      "path": "release/LICENSE-DECISION.md",
+      "bytes": 13277,
+      "sha256": "00a5fb6f3ab088de88967c901b73b14fa9ab381982bfcca73be74feb77405649"
+    },
+    {
+      "path": "release/LICENSE-EVIDENCE.json",
+      "bytes": 6004,
+      "sha256": "647f8178b6494adc4ba6c47b942018b555332549f54f8b7ba0e55b4fb732dbdd"
+    },
+    {
+      "path": "release/TEST-SUMMARY.md",
+      "bytes": 38760,
+      "sha256": "c28ad208eadf5ae46d587ab41fcaa4d1e8678c13e8fd29f4ec434474e5b736cd"
+    },
+    {
+      "path": "release/VENDOR-CLARIFICATION.md",
+      "bytes": 2785,
+      "sha256": "38cb5109fcbc6aa75f6597635490ecf7b76f02b78d1d342ede4f8ba9eb74a547"
+    },
+    {
+      "path": "scripts/build-macos-launcher.mjs",
+      "bytes": 14673,
+      "sha256": "67eab547c64f08e7f7c558c3ce842f2527a5c95258a866cb6cdc42a62691efb7"
+    },
+    {
+      "path": "scripts/check-release.mjs",
+      "bytes": 3244,
+      "sha256": "15552efacc4b6642c8c1787088934a6b78f3bda9f492e7b4cdbcf35cfc2d14ab"
+    },
+    {
+      "path": "scripts/local-transport-status.mjs",
+      "bytes": 1758,
+      "sha256": "fc62a585be19b42d54d2ad72877a598654a6d14a282707b24ad2224f271df28d"
+    },
+    {
+      "path": "scripts/native-pane-qa.mjs",
+      "bytes": 14391,
+      "sha256": "092560ab5a58b6ec0120d712144833d21605e074215eb28b0346bd92e328c7f8"
+    },
+    {
+      "path": "scripts/native-reliability-checks.js",
+      "bytes": 12595,
+      "sha256": "01e6fcf4b1d60de82b0a87d7d24defeecaebfd135e2325a3610e4fa00031e9cb"
+    },
+    {
+      "path": "scripts/native-word-checks.js",
+      "bytes": 12488,
+      "sha256": "567891af439ba4a2e5c0a8c8058ce4d15389c714e7a3c3f873e355cca957f016"
+    },
+    {
+      "path": "scripts/native-word-qa.mjs",
+      "bytes": 13336,
+      "sha256": "c7aa05395d6f5d084c088e5749e3e11295cab15a4233f0eec61680fff6aded68"
+    },
+    {
+      "path": "scripts/native-write-boundary-checks.js",
+      "bytes": 5971,
+      "sha256": "3fa82189dbcde5aba97c48eaed21df969db200aa4347b401db0e116054e53e83"
+    },
+    {
+      "path": "scripts/serial-handoff-check.mjs",
+      "bytes": 11018,
+      "sha256": "ea49f4f66a23ce71ee9983470d583f7f85b7237f13281c47e18187a5dcaf596c"
+    },
+    {
+      "path": "scripts/session-replay-offline.mjs",
+      "bytes": 22212,
+      "sha256": "18dc8199b53d2e50c251325736a8da553706e3f51ff549cedbd8acd765afb509"
+    },
+    {
+      "path": "scripts/setup-preview-tls.mjs",
+      "bytes": 2940,
+      "sha256": "cf2068217d9ec89142a47b4814b0defbe9bc4b391e8f6e5e91a6a2f6f4abe806"
+    },
+    {
+      "path": "SECURITY.md",
+      "bytes": 1272,
+      "sha256": "59d5a87698ffdb4346d71c3e6510e9f07181ec32ec02e199c0a0f23251aabf54"
+    },
+    {
+      "path": "taskpane/excel/index.html",
+      "bytes": 9694,
+      "sha256": "07d6fbe316727bec6bb2f98ece1bcf344e0984db6e5108c59050997f74d243e6"
+    },
+    {
+      "path": "taskpane/icon-32.png",
+      "bytes": 1430,
+      "sha256": "4e18c7bf60b48d72aefb3ef6dfbd7c34ce8f35ef1589989d5d6debf8e9a8e429"
+    },
+    {
+      "path": "taskpane/icon-64.png",
+      "bytes": 2708,
+      "sha256": "408dcaa5b70a70b2895e7930c4cdf19f0bc0f75adf314d95c202ee387e1ecf5f"
+    },
+    {
+      "path": "taskpane/shared/operation-queue.js",
+      "bytes": 2078,
+      "sha256": "2570e3c5489ef964292bdbc7b37f74eee808b7ce5e714e31b99ded09b7673296"
+    },
+    {
+      "path": "taskpane/shared/paths.js",
+      "bytes": 2903,
+      "sha256": "1ee2d4ea94baea0de0ca6d357a4c6dc878d3a56836204e1cabc1f7252eb7d8a8"
+    },
+    {
+      "path": "taskpane/shared/styles.css",
+      "bytes": 25180,
+      "sha256": "cde1fb9642e096e47423fe3b4f3be10c107fcc292e94b6a11a5890dc92de7a57"
+    },
+    {
+      "path": "taskpane/shared/taskpane.js",
+      "bytes": 121030,
+      "sha256": "08c93f947f17087bc864a19f6986f8d354f845288bed7248c71ba280d08fd12b"
+    },
+    {
+      "path": "taskpane/shared/tools-excel.js",
+      "bytes": 41974,
+      "sha256": "3f9b136de269cbf08be609cdb71a85b101d0aaaf8da6ddfc6d40d63d6353a1f2"
+    },
+    {
+      "path": "taskpane/shared/tools-word.js",
+      "bytes": 89083,
+      "sha256": "9c8fbfec77cc7cdc31b66bc49a80fe68b392a9b8c4447b03f3d416a8eed3104c"
+    },
+    {
+      "path": "taskpane/shared/word-edit-plan.js",
+      "bytes": 2360,
+      "sha256": "6f0174345da2a0c9cd0715f078b46a73bd666ac4b0c28fedcd4272b650f83c9b"
+    },
+    {
+      "path": "taskpane/shared/word-ooxml-state.js",
+      "bytes": 17930,
+      "sha256": "6d561f10294f49dc585c01ec6548e4cfac722ebc59361d605b379a3ce6ba43eb"
+    },
+    {
+      "path": "taskpane/shared/word-review.js",
+      "bytes": 36295,
+      "sha256": "7bdc9dcd4700687daf033d8d40b99158a4db937a9123af20fd38851df1bfc330"
+    },
+    {
+      "path": "taskpane/shared/word-write-safety.js",
+      "bytes": 5003,
+      "sha256": "99ceff32d895dc2e6ee16b74aa85078e686ea3a93dbf112b833e1cc2888c2656"
+    },
+    {
+      "path": "taskpane/word/index.html",
+      "bytes": 11728,
+      "sha256": "3791c8808e829ad36eff4d57264305cc7ed080a64dbe8c9c8ca70b6ffc943311"
+    },
+    {
+      "path": "tests/acceptance-profile.test.mjs",
+      "bytes": 7146,
+      "sha256": "70a171cb6f24d666f58e2c22e0fcc7147a52cb514cb8bda43d921f7cf1ed76b2"
+    },
+    {
+      "path": "tests/addin-guidance.test.mjs",
+      "bytes": 5242,
+      "sha256": "7fcba6f2c731881004b30a1bac88cb001310967813e4401052c670c09be68963"
+    },
+    {
+      "path": "tests/addin-registration.test.mjs",
+      "bytes": 4452,
+      "sha256": "98d60d7d8890dc983d1636ac57a62fb17bfd2cb9f1fa9270bb09f2378aec1afa"
+    },
+    {
+      "path": "tests/bridge-writes.test.mjs",
+      "bytes": 7196,
+      "sha256": "cd99bb459f6c8f53f7627752cd209633a7dc2a94811de63b81505f70b43570b3"
+    },
+    {
+      "path": "tests/bridge.test.mjs",
+      "bytes": 7806,
+      "sha256": "27d4dd85042cc759a754512d1e7b8fe4c8c5a48047ba1febe2c1f67447f762ee"
+    },
+    {
+      "path": "tests/codebuddy-close.test.mjs",
+      "bytes": 11734,
+      "sha256": "3eaa8c20e0c5409e9021d250974349e58311484d6258842388cbd6658c3c6a9b"
+    },
+    {
+      "path": "tests/codebuddy-real-close-e2e.mjs",
+      "bytes": 4639,
+      "sha256": "c6ca4f37bce83d6fef1d1d8c1d315151e0d823502d65243432b4531f43edaeaa"
+    },
+    {
+      "path": "tests/context.test.mjs",
+      "bytes": 7014,
+      "sha256": "747f4c522a43aac521df2c0e1c63b2f8e1d6ce0590b71d3e0d2fd3e55743c1df"
+    },
+    {
+      "path": "tests/daemon-flow.test.mjs",
+      "bytes": 22541,
+      "sha256": "cbba610a39f5961fa023d6342d666a883b4cac1d79fea36bf7201ca69f93f182"
+    },
+    {
+      "path": "tests/daemon-parent-death.test.mjs",
+      "bytes": 6195,
+      "sha256": "02a83b1dc60b623e0a504d455477c5ba11ec6f5032aaeb2eb848fbe13640daa4"
+    },
+    {
+      "path": "tests/daemon-persistence-recovery.test.mjs",
+      "bytes": 9314,
+      "sha256": "3bebd6c726f940a405dfef29ceb81ce7fafdfe2ab6a8b2570d0cf3cdb18cbae3"
+    },
+    {
+      "path": "tests/daemon-real-sdk-exit-e2e.mjs",
+      "bytes": 5356,
+      "sha256": "e462365c0ad0a01589c341792217b347ec1689923f4098bfd0645785eeba2e1a"
+    },
+    {
+      "path": "tests/desktop-action-copy.test.mjs",
+      "bytes": 1671,
+      "sha256": "43a605f41ec48214771ea27145cbd4093778d68787979f10bdecc91754e5de9e"
+    },
+    {
+      "path": "tests/desktop-fault-electron-e2e.mjs",
+      "bytes": 19686,
+      "sha256": "1fec714b4045e19e3de14985197c016bfe3627190373449998ec0a979c373b41"
+    },
+    {
+      "path": "tests/desktop-faults.test.mjs",
+      "bytes": 7991,
+      "sha256": "2a3d541ad61a84b425ce544d410fe016d2b5b7dcecd65521588d222c70c21075"
+    },
+    {
+      "path": "tests/desktop-initialization.test.mjs",
+      "bytes": 4328,
+      "sha256": "61d01a2ea892bba8adc592009718b9f0c0ef3d03694c9780d87f93fdf6863c52"
+    },
+    {
+      "path": "tests/desktop-lifecycle.test.mjs",
+      "bytes": 7388,
+      "sha256": "f995b3225f93dde6bbfe4ecaabdc9a4260ebce4fa90b51cbe6831e586ec1e92d"
+    },
+    {
+      "path": "tests/desktop-preflight.test.mjs",
+      "bytes": 12392,
+      "sha256": "32e46b103d1fba896ca75066287d83a4343b55fee0cef43a9e5a855584b0337e"
+    },
+    {
+      "path": "tests/desktop-status-window.test.mjs",
+      "bytes": 18217,
+      "sha256": "6d59fa6181c883fbda66fd960d0d1c03452806ea35a83a89bf51dd263fa57670"
+    },
+    {
+      "path": "tests/desktop-supervisor.test.mjs",
+      "bytes": 11912,
+      "sha256": "a0c34cc18d5e044a7edbbd15c0dc6adbc6349706877728fc849b595be86bbf58"
+    },
+    {
+      "path": "tests/excel-bootstrap.test.mjs",
+      "bytes": 4436,
+      "sha256": "4be8af425af499e15e69381e47610079ec1b6d7aac99ed70b96316589b6f32ba"
+    },
+    {
+      "path": "tests/excel-manifest.test.mjs",
+      "bytes": 1492,
+      "sha256": "427ece69c174a335ab4925a02e8c4f81a4f728d3dee3025f1212fc3fba808f24"
+    },
+    {
+      "path": "tests/excel-preconditions.test.mjs",
+      "bytes": 26067,
+      "sha256": "b6224c54b75f2eefaa94f3c07d43ca2e80c6cd49b68ae9dc4b4f35cb5415e87a"
+    },
+    {
+      "path": "tests/fixtures/word-native-accepted-insertion.json",
+      "bytes": 320905,
+      "sha256": "b9e52f76fd2e299a94f98d5b7c01eff4a598ff1e8d09d221cf776b8ba07361c4"
+    },
+    {
+      "path": "tests/fixtures/word-native-ooxml-snapshots.json",
+      "bytes": 350384,
+      "sha256": "0c38b0bcf4fcd3549667cf10b801c3e8daf4b07a37f695dcf3f3afad33e79e68"
+    },
+    {
+      "path": "tests/fixtures/word-native-reviewed-ooxml-snapshots.json",
+      "bytes": 396410,
+      "sha256": "11a3a801bf6c91494f922029ee9204db879e815cf5ac89f32d56bd72a953194e"
+    },
+    {
+      "path": "tests/graceful-shutdown.test.mjs",
+      "bytes": 10065,
+      "sha256": "c4c0598de274ce2cbe1719f46668d10f090abb48b6eb5111650d9c95ccb86e43"
+    },
+    {
+      "path": "tests/health-watch.test.mjs",
+      "bytes": 994,
+      "sha256": "362c5d289f024586e9bf337f6150f2a4e1869ed34add686da6df5cdb802bf55d"
+    },
+    {
+      "path": "tests/helpers/codebuddy-transport.mjs",
+      "bytes": 1040,
+      "sha256": "c19bcdf0cf182337eb758906f54cd972a4f8b58fc605148cb5f10b0675fe20b7"
+    },
+    {
+      "path": "tests/helpers/openssl.mjs",
+      "bytes": 422,
+      "sha256": "4ebc4e87a157cbada71b609e5bc109074acc82244a40f831292cf1aebcdfbc87"
+    },
+    {
+      "path": "tests/helpers/tray-supervisor.mjs",
+      "bytes": 3778,
+      "sha256": "82ffe64a851d63778407ac28785bbe9333e78efb1062a3f31b5b398e2d6a79d6"
+    },
+    {
+      "path": "tests/launcher-heartbeat-e2e.mjs",
+      "bytes": 3086,
+      "sha256": "3cd667d69b3e22b7512ecca60a27857122ce258b256f2f21cec2b9f074b57a08"
+    },
+    {
+      "path": "tests/launcher-monitor-native-e2e.mjs",
+      "bytes": 6780,
+      "sha256": "a41a729464cd76db298f512241d13c2af361158dcfa16299d8eda2a2bfc19325"
+    },
+    {
+      "path": "tests/local-transport-config.test.mjs",
+      "bytes": 8475,
+      "sha256": "899d330a6206c413b06c61a64c59956edad7285054eafc22c956046f3891f8d8"
+    },
+    {
+      "path": "tests/local-transport.test.mjs",
+      "bytes": 9235,
+      "sha256": "d3f61312b19940dd07ba29d7a5f313fb8cee75d55c354e2fafeeb7ac2a78c053"
+    },
+    {
+      "path": "tests/macos-excel-open.test.mjs",
+      "bytes": 2170,
+      "sha256": "35f6c16f99ac88b3f29bfbd81456e07dc0aae00d5fc9c3046c2381dfa934417c"
+    },
+    {
+      "path": "tests/macos-launcher-build.test.mjs",
+      "bytes": 15035,
+      "sha256": "4ba28f863122bc29fb2bc4d427cfc2c79a2077fa6b0685901a46be22be2d9c4c"
+    },
+    {
+      "path": "tests/messages.test.mjs",
+      "bytes": 4312,
+      "sha256": "e4abf1d69a50fd54809ec94cde104c3decdb6b09e221fd33a226ba11967022e4"
+    },
+    {
+      "path": "tests/model-discovery.test.mjs",
+      "bytes": 2638,
+      "sha256": "72fc02eea555cd73c3dbce01cb75441c9a8f6fd38075bb559aa0501b34a7eac0"
+    },
+    {
+      "path": "tests/models.test.mjs",
+      "bytes": 2751,
+      "sha256": "983f4dd50d16e41a3ef416d211859516b186c38c0a81e24bc9acae4cc35c9a7e"
+    },
+    {
+      "path": "tests/native-pane-qa.test.mjs",
+      "bytes": 10726,
+      "sha256": "0baef704e9833601cfbe7be7441876df99560d17d8bb506491c5d03fabcaff03"
+    },
+    {
+      "path": "tests/native-write-boundaries.test.mjs",
+      "bytes": 3467,
+      "sha256": "eca5e68140e025d7497bae8db3b31a5fcb531f70774a4e5a8a6678c01c02231d"
+    },
+    {
+      "path": "tests/office-read-only.test.mjs",
+      "bytes": 1223,
+      "sha256": "cac638966d9e98c9fe30bfb7e2df063676016fd751a5cfab33b064f205f54ee5"
+    },
+    {
+      "path": "tests/office-schema.test.mjs",
+      "bytes": 6073,
+      "sha256": "2b9688d7b2030c06bc51490b0d795e4b0c14bcdb0b1e9af44071fdfa3f3b1057"
+    },
+    {
+      "path": "tests/pane-disconnect-electron-e2e.mjs",
+      "bytes": 20321,
+      "sha256": "eda72904fbe5a1314d40d02b53f7a6c3770ae31ddbedc5f54e7d9bd80f4baee8"
+    },
+    {
+      "path": "tests/pane-disconnect-safety.test.mjs",
+      "bytes": 16340,
+      "sha256": "a41e3e03b937a593f5991fa01cfe8539cc68cf94a23aeefa1566f87a5d8f8a36"
+    },
+    {
+      "path": "tests/pane-flow.test.mjs",
+      "bytes": 36251,
+      "sha256": "164eebd6239f2f9d447ed92262d65360121582d8aba3870c8bc443e1cdaaf9c4"
+    },
+    {
+      "path": "tests/pane-process-electron-e2e.mjs",
+      "bytes": 7467,
+      "sha256": "fc1f1f29bcc59423fcb3514f9025635b0c7c1a2a984e4713e6251bb1327d71b6"
+    },
+    {
+      "path": "tests/permission-guard.test.mjs",
+      "bytes": 2753,
+      "sha256": "253125aa82727796c95e2753caa59baccb15f6a706cc6be3d60c71dd772fb213"
+    },
+    {
+      "path": "tests/preview-integration.test.mjs",
+      "bytes": 3838,
+      "sha256": "16456d81975bfbb9d32949ca169a583a0fe9a945efca79ca9a923cde52cc209c"
+    },
+    {
+      "path": "tests/preview-policy.test.mjs",
+      "bytes": 4111,
+      "sha256": "a7e7d66f681c5e4d9e6b3df910787836b88b006eb722af00b12877145a060449"
+    },
+    {
+      "path": "tests/preview-registration.test.mjs",
+      "bytes": 3487,
+      "sha256": "6861583ee3a05ac793fbc8d160c2a8c042c9a3875c714da211cd7e0cb308236b"
+    },
+    {
+      "path": "tests/preview-tls.test.mjs",
+      "bytes": 1658,
+      "sha256": "7b2a838f23d9ca6e60f294d7b1a4b0cf4408fe90d6d7bbc108372c93b36d64b4"
+    },
+    {
+      "path": "tests/quit-barrier.test.mjs",
+      "bytes": 5548,
+      "sha256": "03d90b939148ad2d88ca08302d4e13de626ddf1fb4ccdab7a806181ec3a892d1"
+    },
+    {
+      "path": "tests/red-team-cell-native.test.mjs",
+      "bytes": 6242,
+      "sha256": "2633eff1d0baa2a56c0df3dc91b48f30bf69410a3f3e0d07db9cdb363573d096"
+    },
+    {
+      "path": "tests/red-team-final-integration.test.mjs",
+      "bytes": 8344,
+      "sha256": "fe0fc343e6ed888ffae0e0b2eeb45f816e6234db72e6beada83288f640337244"
+    },
+    {
+      "path": "tests/red-team-pane.test.mjs",
+      "bytes": 18068,
+      "sha256": "13283aa2c4f8d98e874cc1a682d6e782a2817320f5e5d624a7066751b4be2bae"
+    },
+    {
+      "path": "tests/red-team-session-lock.test.mjs",
+      "bytes": 4935,
+      "sha256": "ca99dd64f280736f71f5a3c18e9f00d54ff6b407ebe9352a3827730193018156"
+    },
+    {
+      "path": "tests/red-team-word.test.mjs",
+      "bytes": 9381,
+      "sha256": "cc6ce99bc4045282cad137eb932b46f2b7eef34f3b179a5fcf431b3bd606f671"
+    },
+    {
+      "path": "tests/regular-file.test.mjs",
+      "bytes": 4066,
+      "sha256": "d79f7464cc1b59e7d703d02b946db7320b9ee2009daab46a8550e0c49b615f88"
+    },
+    {
+      "path": "tests/release-check.test.mjs",
+      "bytes": 1552,
+      "sha256": "2293f2c490e4fa70df10e4424bbcc6516bcdc59cf1a8e1a32aebf241f8235446"
+    },
+    {
+      "path": "tests/reliability.test.mjs",
+      "bytes": 10903,
+      "sha256": "a90fcaa1e6c6a2c4ec8699c5832eedf71c70b6b5f4ad3c69cff713f7ebf77822"
+    },
+    {
+      "path": "tests/runtime-select.test.mjs",
+      "bytes": 2364,
+      "sha256": "0f27679c07d52feb91c0d329c98b25fbb479858d0b4a11c635d2d5c94c7a1869"
+    },
+    {
+      "path": "tests/session-archive.test.mjs",
+      "bytes": 4765,
+      "sha256": "edbb62338aea1aa8988b89d05738198c8e5e892ebb7cea529ea9c8ec07bea9af"
+    },
+    {
+      "path": "tests/session-persistence.test.mjs",
+      "bytes": 6273,
+      "sha256": "cd811a1194b302060f5c51140d86d43dcd11515b05f39b235a774217f48b30bf"
+    },
+    {
+      "path": "tests/session-recovery.test.mjs",
+      "bytes": 13063,
+      "sha256": "1a2898105e3f7bb09632a6b37de0e7a1da18a5c39743437853bd345a371606c4"
+    },
+    {
+      "path": "tests/sessions.test.mjs",
+      "bytes": 8220,
+      "sha256": "5b10f4d5ad9de26ebaf9051cfa8e407ad2383ebf82118656a0cd3e76c90a085d"
+    },
+    {
+      "path": "tests/single-instance-electron-e2e.mjs",
+      "bytes": 6831,
+      "sha256": "cc483f0f9e2c49a6409f23d077b68391920a36cb0712957ce4363c26ef925d18"
+    },
+    {
+      "path": "tests/single-instance.test.mjs",
+      "bytes": 9057,
+      "sha256": "4d09c32ab8296fd84b128c7cab92e20f37a1e21bd45398631f79f351d17ae438"
+    },
+    {
+      "path": "tests/supervisor-e2e.test.mjs",
+      "bytes": 5403,
+      "sha256": "9d45e2e0c35f0dfd0177b2879cce405099c1e6083ffab3b1b94fe9def749eeba"
+    },
+    {
+      "path": "tests/supervisor-restart.test.mjs",
+      "bytes": 3349,
+      "sha256": "dcba6fe35528a15215d4b8a517d2f0a07ca94c97270aa844b5ecbcad2af163de"
+    },
+    {
+      "path": "tests/system-prompt-boundary.test.mjs",
+      "bytes": 645,
+      "sha256": "185a790bcc038d941f414c57dfe5136ba925ebbfe54dd418578f46fcf30e5783"
+    },
+    {
+      "path": "tests/transcript-paths.test.mjs",
+      "bytes": 2251,
+      "sha256": "01729e9d2cef10e398dcd1bcab8919a9d3a21ac8106dda9fdfca4746bfb93e8c"
+    },
+    {
+      "path": "tests/transcript.test.mjs",
+      "bytes": 10744,
+      "sha256": "5579a5ca7ae176ef586bff90f2cfbd8071c69e2f6b366002ce0dd2695fa3687e"
+    },
+    {
+      "path": "tests/turn-activity.test.mjs",
+      "bytes": 7484,
+      "sha256": "f3a2554bc1a8733d82d1cfcf82543dddc5b1f1c1eae8ad4dd1ebba0f4c00680b"
+    },
+    {
+      "path": "tests/turn-lifecycle.test.mjs",
+      "bytes": 5900,
+      "sha256": "d427bdacce4a7d723b83be2016232a8acaa7e76121f85181056767fa8a7708dd"
+    },
+    {
+      "path": "tests/turns.test.mjs",
+      "bytes": 3670,
+      "sha256": "eac2ee190b56b125d65a163fe350d54e1a46cadf56cb7fcee50bcf6e32ad17fb"
+    },
+    {
+      "path": "tests/word-bootstrap.test.mjs",
+      "bytes": 5374,
+      "sha256": "3b6c3a7b9421bbad01e2c5bf81e438bcf4e7fdb9715de37a0d993f87b82d405c"
+    },
+    {
+      "path": "tests/word-ooxml-state.test.mjs",
+      "bytes": 8517,
+      "sha256": "37833432e1d731ab03f0da275801e40e2407d91c23261f985f3ecef60eb969d0"
+    },
+    {
+      "path": "tests/word-review.test.mjs",
+      "bytes": 21433,
+      "sha256": "41f767dc49b9c3b06a2f05f20a48c761df06ea10761a9a49a0f4f1fcf4a5d428"
+    },
+    {
+      "path": "tests/word-safety.test.mjs",
+      "bytes": 12469,
+      "sha256": "b2f4a259b9a0f4d7b2dbf6db56cca8e03ebd6f81cf9597f55f3f8c7eeb41fda9"
+    },
+    {
+      "path": "tests/word-write-guards.test.mjs",
+      "bytes": 27102,
+      "sha256": "26905bdf8908a7481343e8d1575943e55baa3fa571be4c0997198390913c9d08"
+    },
+    {
+      "path": "tests/workspace.test.mjs",
+      "bytes": 6058,
+      "sha256": "3d61777228e3f34cc3f2c0b0f6bdba9bd5c001343b8dc6df7223c2a6a3424cf0"
+    },
+    {
+      "path": "THIRD-PARTY-NOTICES.md",
+      "bytes": 1654,
+      "sha256": "dc3384feb419e2a16ad979899e464965e5cb65ff33e0fb4d7898edbe64511924"
+    },
+    {
+      "path": "UPSTREAM.md",
+      "bytes": 1606,
+      "sha256": "028ad84e87b7063a304772c6904ae9100e149332011b36586629035287f05ca1"
+    },
+    {
+      "path": "release/PRIVACY-REVIEW.md",
+      "bytes": 2284,
+      "sha256": "2125439bedc6e7f0b98c44627fad96a3b4a551e4124c8e73fefac0e5ea9d188b"
+    }
+  ]
+}

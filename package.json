@@ -1,0 +1,41 @@
+{
+  "name": "draftspect-office-addins",
+  "version": "0.2.0-preview.4",
+  "description": "Office CodeBuddy Developer Preview — local CodeBuddy bridge for Microsoft Word and Excel, based on Draftspect; macOS-first source preview.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brucecbi/office-codebuddy.git"
+  },
+  "homepage": "https://github.com/brucecbi/office-codebuddy#readme",
+  "bugs": {
+    "url": "https://github.com/brucecbi/office-codebuddy/issues"
+  },
+  "private": true,
+  "main": "app/main.mjs",
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "node daemon/index.mjs",
+    "app": "electron .",
+    "start": "electron .",
+    "build:macos": "node scripts/build-macos-launcher.mjs",
+    "test:desktop:electron": "node tests/single-instance-electron-e2e.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "check:release": "node scripts/check-release.mjs"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@anthropic-ai/claude-agent-sdk": "0.2.141",
+    "@tencent-ai/agent-sdk": "0.3.243",
+    "ws": "8.21.3",
+    "zod": "4.6.1"
+  },
+  "devDependencies": {
+    "electron": "42.11.3",
+    "prettier": "3.8.3"
+  }
+}
