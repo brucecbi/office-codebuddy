@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.2.0-preview.4 — 2026-10-24 — single-document redline audit
+
+- Added read-only `office_audit_redline` for one Word story. It freezes native
+  revision and comment evidence, the Current/Original pages it actually read,
+  coverage gaps, and a before/after consistency probe. It does not write,
+  accept, reject, resolve, or call a model.
+- A failed read, an unsupported story, an unfinished page, or zero native rows
+  stays explicit. None of those is a full-file pass or a claim that revisions
+  are absent. Empty `Deleted.text` is retained. Word authors stay separate from
+  the file submitter. The audit snapshot is not write authority.
+- Offline coverage is in `docs/REDLINE-REVIEW-PROGRESS.md`. Native macOS Word
+  was not run. `release/approved-files.json` was not regenerated.
+
 ## 0.2.0-preview.4 — 2026-10-14 — GitHub source publication
 
 - Owner authorized source publication at brucecbi/office-codebuddy. Created the

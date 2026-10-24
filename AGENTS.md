@@ -17,3 +17,13 @@ Keep LICENSE and UPSTREAM.md. Do not restore private development paths or report
   global configuration and dependency upgrades require explicit authorization.
 - Update CHANGELOG.md and release/TEST-SUMMARY.md for meaningful changes. Generate
   release/approved-files.json only after final review; the manifest excludes itself.
+
+## Redline review development
+
+For redline, multi-author review, or multi-submission work, read
+`docs/REDLINE-REVIEW-PLAN.md` in full and check
+`docs/REDLINE-REVIEW-PROGRESS.md` if present before editing.
+Implement only the phase authorized in the current task; record evidence,
+coverage gaps, and actual test results. Cloud/offline tests do not establish
+native macOS Word compatibility. Preserve the existing Office-only policy,
+write approvals, live preconditions, serial execution, and RESULT_UNKNOWN.

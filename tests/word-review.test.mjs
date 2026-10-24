@@ -8,6 +8,7 @@ import {
   toolReadFormatting,
   toolReadComments,
   toolReadRevisions,
+  toolAuditRedline,
   prepareReviewWrite,
 } from "../taskpane/shared/word-review.js";
 import { toolClearComments, toolAddComment } from "../taskpane/shared/tools-word.js";
@@ -628,4 +629,151 @@ test("native paired replacement exposes but never accepts the hidden deletion, w
   assert.equal(result.api_revision_list_changed, true);
   assert.match(result.verification, /full_ooxml_and_Current/);
   assert.equal(f.main.revisions.at(-1).type, "Deleted");
+});
+
+test("read-only redline audit keeps authors, empty deletions and coverage limits without writing", async () => {
+  const f = fixture();
+  const deleted = f.addRevision("Deleted", "");
+  const added = f.addRevision("Added", "100");
+  deleted.author = "甲";
+  added.author = "乙";
+  const comment = f.comment(f.main, "请确认条款", "C1");
+  comment.authorName = "甲";
+  comment.resolved = true;
+  comment.reply("已看");
+  f.main.comments.push(comment);
+  const beforeRevisions = f.main.revisions.length;
+  const writes = f.writes;
+  const audit = await toolAuditRedline({
+    submitter: "Filing Clerk",
+    file_sha256: "ab".repeat(32),
+    anchor_queries: ["USD 100"],
+  });
+  assert.equal(f.writes, writes);
+  assert.equal(f.main.revisions.length, beforeRevisions);
+  assert.equal(comment.resolved, true);
+  assert.equal(audit.office_writes, 0);
+  assert.equal(audit.model_invoked, false);
+  assert.equal(audit.complete_file_audit, false);
+  assert.equal(audit.verified_state, false);
+  assert.equal(audit.usable_for_writes, false);
+  assert.equal(audit.claims_no_revisions, false);
+  assert.equal(audit.snapshot.source.kind, "live_word");
+  assert.equal(audit.snapshot.source.submitter, "Filing Clerk");
+  assert.equal(audit.snapshot.source.file_sha256, null);
+  assert.equal(audit.snapshot.source.hash_scope, "collected_evidence_only");
+  assert.equal(audit.snapshot.consistency.full_file_consistent, false);
+  assert.equal(audit.snapshot.consistency.evidence_probe_matched, true);
+  assert.equal(audit.revisions.length, 2);
+  const empty = audit.revisions.find((row) => row.native_type === "Deleted");
+  assert.equal(empty.native_text, "");
+  assert.equal(empty.mapping_status, "partial_native_pair");
+  assert.deepEqual(audit.revisions.map((row) => row.word_author).sort(), ["乙", "甲"]);
+  assert.ok(audit.revisions.every((row) => row.word_author !== "Filing Clerk"));
+  assert.equal(audit.summary.comment_threads, 1);
+  assert.equal(audit.summary.replies, 1);
+  assert.equal(audit.comments[0].resolved, true);
+  assert.equal(audit.comments[0].replies[0].text, "已看");
+  assert.equal(audit.mappings[0].enumeration_complete, false);
+  assert.equal(audit.mappings[0].count_equality_is_completeness, false);
+  assert.equal(
+    audit.coverage.entries.some((row) => row.status === "confirmed_absent"),
+    false,
+  );
+  const footer = audit.coverage.entries.find(
+    (row) => row.scope_label === "footer / section 0 / Primary",
+  );
+  assert.equal(footer.status, "not_read");
+  assert.equal(footer.absence_confirmed, false);
+  assert.equal(
+    audit.anchors.find((row) => row.view === "Current" && row.query === "USD 100").status,
+    "found",
+  );
+  await assert.rejects(
+    prepareReviewWrite("office_manage_revisions", {
+      action: "accept",
+      snapshot_id: audit.snapshot_id,
+      indices: [0],
+    }),
+    /expired/,
+  );
+  assert.equal(f.writes, writes);
+});
+
+test("redline audit reports an unfinished story page instead of a coverage pass", async () => {
+  const f = fixture();
+  const second = f.body("第二条 同意。", "P2");
+  const third = f.body("第三条 同意。", "P3");
+  const paragraphs = [
+    f.main.paragraphs.items[0],
+    second.paragraphs.items[0],
+    third.paragraphs.items[0],
+  ];
+  f.main.paragraphs = f.list(() => paragraphs);
+  const audit = await toolAuditRedline({
+    story_limit: 1,
+    max_story_pages: 1,
+    anchor_queries: ["同意。"],
+  });
+  const current = audit.coverage.entries.find(
+    (row) =>
+      row.capability === "story_text" && row.version === "Current" && row.scope_label === "body",
+  );
+  assert.equal(current.paging_complete, false);
+  assert.equal(current.next_cursor, 1);
+  assert.equal(audit.complete_file_audit, false);
+  assert.equal(audit.summary.coverage_pass, false);
+  assert.equal(audit.snapshot.consistency.evidence_probe_matched, true);
+  const anchor = audit.anchors.find((row) => row.view === "Current" && row.query === "同意。");
+  assert.equal(anchor.status, "not_found");
+  assert.match(anchor.reason, /Unread pages were not searched/);
+  assert.equal(f.writes, 0);
+});
+
+test("a changed document expires the prior audit token without writing or replaying it", async () => {
+  const f = fixture();
+  const first = await toolAuditRedline({ source_id: "synthetic-doc" });
+  f.main.text = "changed after the audit";
+  const second = await toolAuditRedline({ prior_snapshot_id: first.snapshot_id });
+  assert.equal(second.snapshot.consistency.prior_snapshot.status, "not_current");
+  assert.equal(second.snapshot.consistency.prior_snapshot.used_as_verified_state, false);
+  assert.equal(second.verified_state, false);
+  assert.notEqual(second.snapshot_id, first.snapshot_id);
+  const missing = await toolAuditRedline({ prior_snapshot_id: "missing-token" });
+  assert.equal(missing.snapshot.consistency.prior_snapshot.status, "expired");
+  assert.equal(missing.snapshot.consistency.prior_snapshot.used_as_verified_state, false);
+  assert.ok(
+    missing.findings.some(
+      (finding) => finding.category === "stale_or_inconsistent" && /expired/.test(finding.detail),
+    ),
+  );
+  assert.equal(f.writes, 0);
+});
+
+test("an unsupported story stays an explicit audit gap and does not become zero revisions", async () => {
+  const f = fixture({ notes: false });
+  const audit = await toolAuditRedline({ target: { story: "footnote", note: 0 } });
+  const revisions = audit.coverage.entries.find((row) => row.capability === "revisions");
+  assert.equal(revisions.status, "unsupported");
+  assert.match(revisions.reason, /UNSUPPORTED_API/);
+  assert.match(revisions.reason, /does not establish that revisions are absent/);
+  assert.equal(audit.summary.native_revision_rows, null);
+  assert.equal(audit.revisions.length, 0);
+  assert.equal(audit.claims_no_revisions, false);
+  assert.equal(audit.complete_file_audit, false);
+  assert.equal(f.writes, 0);
+});
+
+test("optional range OOXML paging stays incomplete and still performs no write", async () => {
+  const f = fixture();
+  const audit = await toolAuditRedline({
+    include_ooxml: true,
+    ooxml_limit: 10,
+    max_ooxml_pages: 1,
+  });
+  const xml = audit.coverage.entries.find((row) => row.capability === "range_ooxml");
+  assert.equal(xml.status, "read");
+  assert.equal(xml.paging_complete, false);
+  assert.equal(audit.complete_file_audit, false);
+  assert.equal(f.writes, 0);
 });

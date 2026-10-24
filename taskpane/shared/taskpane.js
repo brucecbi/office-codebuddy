@@ -68,6 +68,7 @@ import {
   toolReadFormatting,
   toolReadRevisions,
   toolReadComments,
+  toolAuditRedline,
   prepareReviewWrite,
 } from "./word-review.js";
 
@@ -718,6 +719,7 @@ const TOOL_STATUS_LABELS = {
   office_insert_bookmark: "Adding a bookmark…",
   office_find: "Searching the document…",
   office_list_comments: "Reading comments…",
+  office_audit_redline: "Auditing revisions…",
   office_reply_to_comment: "Replying to a comment…",
   office_resolve_comment: "Resolving a comment…",
   office_header_footer: "Editing header/footer…",
@@ -1649,6 +1651,9 @@ async function executeOfficeTool(msg, control) {
       case "office_read_revisions":
         result = await toolReadRevisions(args);
         break;
+      case "office_audit_redline":
+        result = await toolAuditRedline(args);
+        break;
       case "office_get_selection":
         result = await toolGetSelection();
         break;
@@ -1815,6 +1820,7 @@ const readOnlyOfficeTools = new Set([
   "office_read_story",
   "office_read_formatting",
   "office_read_revisions",
+  "office_audit_redline",
   "office_get_selection",
   "office_read_paragraphs",
   "office_get_document_text",

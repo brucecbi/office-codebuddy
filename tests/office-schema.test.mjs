@@ -27,7 +27,7 @@ for (const [provider, sdk] of [
       sdk,
     );
     const tools = server.instance._registeredTools;
-    assert.equal(Object.keys(tools).length, 34);
+    assert.equal(Object.keys(tools).length, 35);
     const walk = (value) => {
       if (!value || typeof value !== "object") return;
       if (value.items)
@@ -45,6 +45,7 @@ for (const [provider, sdk] of [
       "office_edit_range",
       "office_manage_comment",
       "office_read_revisions",
+      "office_audit_redline",
       "office_manage_revisions",
     ]) {
       assert.ok(tools[name]);

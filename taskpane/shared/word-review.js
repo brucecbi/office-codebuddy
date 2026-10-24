@@ -1,6 +1,14 @@
 /* global Word, Office */
 import { stableOoxml, stableCellOoxml, verifyAcceptedInsertion } from "./word-ooxml-state.js";
 import {
+  buildRedlineAudit,
+  canonicalJson,
+  semanticComment,
+  semanticRevision,
+  sha256Hex,
+  REDLINE_AUDIT_TTL_MS,
+} from "./redline-audit.js";
+import {
   assertTextTargetSafe,
   assertNoCrossParagraphFields,
   assertLiteralSearchText,
@@ -31,6 +39,7 @@ const PARA = [
 ];
 const revisionSnapshots = new Map();
 const formatSnapshots = new Map();
+const auditSnapshots = new Map();
 const own = (obj, keys) => Object.fromEntries(keys.map((k) => [k, obj[k] ?? null]));
 const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 const integer = (v, label) => {
@@ -553,6 +562,221 @@ export async function toolReadRevisions({ target = {} } = {}) {
         "Native API revision rows in this story, not an exhaustive OOXML inventory. Word may collapse paired insertion/deletion replacements; accepting one can expose the existing counterpart. Empty Deleted.text is not proof of no deleted text: use Original and OOXML. Unsupported/move revisions may fail the host API; report that gap. Snapshot expires after five minutes or a document change.",
     };
   });
+}
+
+function auditFailure(error) {
+  const message = error?.message || String(error);
+  return {
+    error: message,
+    unsupported: /UNSUPPORTED_API|Unknown story kind|Unknown header\/footer/.test(message),
+  };
+}
+async function readAuditSection(work) {
+  try {
+    return { value: await Word.run(work) };
+  } catch (error) {
+    return auditFailure(error);
+  }
+}
+async function captureAuditProbe(target) {
+  // Capture paragraph text before the story OOXML hash so both probes share
+  // one read order. A later hash must not observe a different prefix of the
+  // same read.
+  const paragraphs = await readAuditSection(async (context) => {
+    const body = await resolveStory(context, target);
+    const stable = supported("1.6");
+    const items = await collection(
+      context,
+      body.paragraphs,
+      stable ? "items/uniqueLocalId" : "items",
+    );
+    const texts = await reviewed(
+      context,
+      items.map((paragraph) => paragraph.getRange()),
+      "Current",
+    );
+    return items.map((paragraph, index) => ({
+      id: stable ? paragraph.uniqueLocalId : null,
+      text: texts[index],
+    }));
+  });
+  const comments = await readAuditSection(async (context) => {
+    const data = await commentData(context, await resolveStory(context, target));
+    return data.rows.map(semanticComment);
+  });
+  const revisions = await readAuditSection(async (context) => {
+    const data = await revisionData(context, target);
+    return {
+      rows: data.rows.map(semanticRevision),
+      story_stable_sha256: sha256Hex(xmlState(data.story_xml, data.story_paragraph_ids, true)),
+    };
+  });
+  return {
+    revisions: revisions.value?.rows ?? null,
+    story_stable_sha256: revisions.value?.story_stable_sha256 ?? null,
+    revision_error: revisions.error ?? null,
+    comments: comments.value ?? null,
+    comment_error: comments.error ?? null,
+    paragraphs: paragraphs.value ?? null,
+    paragraph_error: paragraphs.error ?? null,
+  };
+}
+async function readStoryPages(target, version, limit, maxPages) {
+  const pages = [];
+  let offset = 0;
+  for (let page = 0; page < maxPages; page++) {
+    try {
+      const result = await toolReadStory({ target, offset, limit, version });
+      pages.push(result);
+      if (result.next_offset == null) return { pages };
+      offset = result.next_offset;
+    } catch (error) {
+      pages.push({ offset, ...auditFailure(error) });
+      return { pages };
+    }
+  }
+  return { pages };
+}
+async function readOoxmlPages(target, limit, maxPages) {
+  const pages = [];
+  let offset = 0;
+  let snapshot_id;
+  for (let page = 0; page < maxPages; page++) {
+    try {
+      const result = await toolReadFormatting({
+        target,
+        ooxml_offset: offset,
+        ooxml_limit: limit,
+        ...(snapshot_id ? { snapshot_id } : {}),
+      });
+      pages.push({
+        ooxml_offset: result.ooxml_offset,
+        ooxml_length: result.ooxml_length,
+        next_ooxml_offset: result.next_ooxml_offset,
+      });
+      if (result.next_ooxml_offset == null) return { pages };
+      snapshot_id = result.snapshot_id;
+      offset = result.next_ooxml_offset;
+    } catch (error) {
+      pages.push(auditFailure(error));
+      return { pages };
+    }
+  }
+  return { pages };
+}
+function describePriorAudit(id, probe) {
+  if (!id) return null;
+  const saved = auditSnapshots.get(id);
+  if (!saved || Date.now() - saved.at > REDLINE_AUDIT_TTL_MS)
+    return { id, status: "expired", used_as_verified_state: false };
+  if (!saved.evidence_probe_matched)
+    return { id, status: "not_verified", used_as_verified_state: false };
+  return {
+    id,
+    status: canonicalJson(saved.probe) === canonicalJson(probe) ? "matches_probe" : "not_current",
+    used_as_verified_state: false,
+  };
+}
+function rememberAuditSnapshot(report, probe) {
+  auditSnapshots.set(report.snapshot_id, {
+    at: Date.now(),
+    probe,
+    evidence_probe_matched: report.snapshot.consistency.evidence_probe_matched,
+  });
+  while (auditSnapshots.size > 8) auditSnapshots.delete(auditSnapshots.keys().next().value);
+}
+
+// Read-only audit. Reuses the document map, story pages, revisionData and
+// commentData collectors. It does not register an accept/reject snapshot.
+export async function toolAuditRedline(args = {}) {
+  const target = structuredClone(args.target || {});
+  storyOnly(target);
+  const limit = args.story_limit === undefined ? 500 : integer(args.story_limit, "story_limit");
+  if (!limit || limit > 500) throw new Error("story_limit must be 1..500");
+  const maxPages =
+    args.max_story_pages === undefined ? 20 : integer(args.max_story_pages, "max_story_pages");
+  if (!maxPages || maxPages > 50) throw new Error("max_story_pages must be 1..50");
+  const includeOoxml = args.include_ooxml === true;
+  let ooxmlLimit = 8000;
+  let maxOoxmlPages = 1;
+  if (includeOoxml) {
+    ooxmlLimit = args.ooxml_limit === undefined ? 8000 : integer(args.ooxml_limit, "ooxml_limit");
+    if (!ooxmlLimit || ooxmlLimit > 100000) throw new Error("ooxml_limit must be 1..100000");
+    maxOoxmlPages =
+      args.max_ooxml_pages === undefined ? 1 : integer(args.max_ooxml_pages, "max_ooxml_pages");
+    if (!maxOoxmlPages || maxOoxmlPages > 20) throw new Error("max_ooxml_pages must be 1..20");
+  }
+  if (args.submitter != null && typeof args.submitter !== "string")
+    throw new Error("submitter must be a string");
+  if (args.source_id != null && (typeof args.source_id !== "string" || !args.source_id))
+    throw new Error("source_id must be a nonempty string");
+  if (args.prior_snapshot_id != null && typeof args.prior_snapshot_id !== "string")
+    throw new Error("prior_snapshot_id must be a string");
+  if (
+    args.anchor_queries != null &&
+    (!Array.isArray(args.anchor_queries) ||
+      args.anchor_queries.length > 20 ||
+      args.anchor_queries.some((query) => typeof query !== "string" || !query))
+  )
+    throw new Error("anchor_queries must be 1..20 nonempty strings");
+
+  const before = await captureAuditProbe(target);
+  let document_map;
+  try {
+    document_map = await toolDocumentMap();
+  } catch (error) {
+    document_map = auditFailure(error);
+  }
+  const current = await readStoryPages(target, "Current", limit, maxPages);
+  const original = await readStoryPages(target, "Original", limit, maxPages);
+  const revisionSection = await readAuditSection(async (context) => {
+    const data = await revisionData(context, target);
+    return {
+      revisions: data.rows,
+      enumeration_complete: false,
+      story_ooxml: data.story_xml,
+      story_stable_sha256: sha256Hex(xmlState(data.story_xml, data.story_paragraph_ids, true)),
+    };
+  });
+  let commentRead;
+  try {
+    commentRead = { target, comments: (await toolReadComments({ target })).comments };
+  } catch (error) {
+    commentRead = { target, ...auditFailure(error) };
+  }
+  const formatting = includeOoxml ? await readOoxmlPages(target, ooxmlLimit, maxOoxmlPages) : null;
+  const after = await captureAuditProbe(target);
+  const report = buildRedlineAudit({
+    snapshot_id: globalThis.crypto.randomUUID(),
+    captured_at: new Date().toISOString(),
+    source: {
+      kind: "live_word",
+      source_id: args.source_id || "active-word-document",
+      submitter: args.submitter ?? null,
+      ...(args.file_sha256 ? { file_sha256: args.file_sha256 } : {}),
+    },
+    requested_target: target,
+    document_map,
+    story_reads: [
+      { target, version: "Current", ...current },
+      { target, version: "Original", ...original },
+    ],
+    revision_reads: [
+      revisionSection.value
+        ? { target, ...revisionSection.value }
+        : { target, error: revisionSection.error, unsupported: revisionSection.unsupported },
+    ],
+    comment_reads: [commentRead],
+    formatting_reads: formatting ? [{ target, ...formatting }] : [],
+    anchor_queries: args.anchor_queries || [],
+    consistency: {
+      before,
+      after,
+      prior_snapshot: describePriorAudit(args.prior_snapshot_id, after),
+    },
+  });
+  rememberAuditSnapshot(report, after);
+  return report;
 }
 
 const SNAPSHOT_FIELDS = new Set([

@@ -13,6 +13,7 @@ const COMPACT_REVIEW_RESULTS = new Set([
   "office_reply_to_comment",
   "office_resolve_comment",
   "office_read_revisions",
+  "office_audit_redline",
   "office_manage_revisions",
 ]);
 
@@ -50,7 +51,7 @@ function modelReviewResult(name, args, result) {
     ? {
         ...projected,
         ooxml_access:
-          "Default model result omits raw OOXML only. For exact XML use office_list_comments or office_read_revisions with include_ooxml:true, or office_read_formatting with include_ooxml:true and small paged ooxml_limit (e.g. 8000). Native verification still used the complete snapshot.",
+          "Default model result omits raw OOXML only. For exact XML use office_list_comments, office_read_revisions, or office_audit_redline with include_ooxml:true, or office_read_formatting with include_ooxml:true and small paged ooxml_limit (e.g. 8000). Native verification still used the complete snapshot.",
       }
     : result;
 }
@@ -1040,6 +1041,34 @@ export function createOfficeBridgeMcp(bridge, host = null, paneKey = null, mcpSd
       "Inspect existing tracked changes in one story: author/date/type, Current/Original range text and paragraph IDs. Raw OOXML is omitted unless include_ooxml:true. Returns a five-minute snapshot_id and zero-based indices for explicit acceptance/rejection. Host errors (including unsupported move revisions) are gaps, never an empty clean result.",
       { target: storyTarget.optional(), include_ooxml: z.boolean().optional() },
       wrap("office_read_revisions"),
+    ),
+    tool(
+      "office_audit_redline",
+      "Read-only audit of one Word story. Returns frozen native revision and comment evidence, the Current/Original pages actually read, coverage gaps, and a before/after consistency probe. complete_file_audit is false. A failed read, unsupported story, unfinished page, or zero native rows is not 'no revisions'. Empty Deleted.text is not proof that deleted text is absent. Word authors are metadata and are not the file submitter. The audit snapshot is not write authority and must not be passed to office_manage_revisions. Does not accept, reject, resolve, or write.",
+      {
+        include_ooxml: z
+          .boolean()
+          .optional()
+          .describe(
+            "Keep raw OOXML in the model result and also read paged range OOXML coverage. Default omits both.",
+          ),
+        target: storyTarget.optional(),
+        submitter: z
+          .string()
+          .optional()
+          .describe("File submitter. Recorded separately from Word authors and never inferred."),
+        source_id: z.string().min(1).optional(),
+        prior_snapshot_id: z
+          .string()
+          .optional()
+          .describe("Earlier audit snapshot. Expired or changed tokens are not verified state."),
+        story_limit: z.number().int().min(1).max(500).optional(),
+        max_story_pages: z.number().int().min(1).max(50).optional(),
+        ooxml_limit: z.number().int().min(1).max(100000).optional(),
+        max_ooxml_pages: z.number().int().min(1).max(20).optional(),
+        anchor_queries: z.array(z.string().min(1)).max(20).optional(),
+      },
+      wrap("office_audit_redline"),
     ),
     tool(
       "office_manage_revisions",

@@ -179,6 +179,7 @@ const handler = async (req, res) => {
     }
     const allowed = [
       "/shared/word-review.js",
+      "/shared/redline-audit.js",
       "/shared/word-ooxml-state.js",
       "/shared/tools-word.js",
       "/shared/word-edit-plan.js",
