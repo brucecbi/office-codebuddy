@@ -9,6 +9,7 @@ export const OFFICE_READ_ONLY_TOOLS = new Set([
   "office_read_story",
   "office_read_formatting",
   "office_read_revisions",
+  "office_audit_redline",
   "office_get_selection",
   "office_read_paragraphs",
   "office_get_document_text",

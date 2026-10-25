@@ -15,3 +15,5 @@ examples/*/CLAUDE.md
 # Local-only scratch is gitignored; AGENTS.md is tracked policy and kept verbatim.
 PORT_TO_OFFICE_ADDINS.md
 AGENTS.md
+# Redline handoff is stored verbatim. Do not reflow it.
+docs/REDLINE-REVIEW-PLAN.md

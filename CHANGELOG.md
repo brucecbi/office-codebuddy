@@ -1,5 +1,51 @@
 # Changelog
 
+## 0.2.0-preview.4 — 2026-10-25 — P1A source-review allowlist
+
+- Source review of the read-only redline audit is complete. Refreshed
+  `release/approved-files.json` for the reviewed tree and added the four audit
+  files. The manifest still excludes itself. No production logic change.
+- Cancellation is checked between audit phases and between pages. A
+  `toolDocumentMap` enumeration that has already started may finish.
+
+## 0.2.0-preview.4 — 2026-10-25 — complete audit reads match the full probe
+
+- A finished Current read must match the closing probe's full paragraph list:
+  count, order, and text. A shorter or empty finished read is not
+  `evidence_probe_matched`. An unfinished page still matches only the range
+  already read, and the unread coverage gap stays.
+- Cancellation is checked between audit phases and between pages.
+  `toolDocumentMap` may finish an enumeration that has already started. A
+  cancel is not a claim that no further `Word.run` can start at any moment.
+
+## 0.2.0-preview.4 — 2026-10-25 — redline audit review fixes
+
+- Kept Current/Original pages and requested range OOXML on the audit snapshot.
+  Coverage ids point at those evidence rows. Story OOXML that contains revision
+  markup is kept when the native collection does not account for it, including
+  zero native rows with deleted markup.
+- An unfinished story page is compared with the closing probe. A page that
+  disagrees with that probe is not `evidence_probe_matched`.
+- `full_snapshot_sha256` covers the taskpane result including raw OOXML.
+  `evidence_sha256` covers the default MCP projection that omits raw OOXML.
+  Both hashes exclude themselves.
+- The operation-queue cancel guard is checked between audit phases and pages.
+  A later task can still run. `toolDocumentMap` may finish an enumeration
+  already in progress.
+
+## 0.2.0-preview.4 — 2026-10-24 — single-document redline audit
+
+- Added read-only `office_audit_redline` for one Word story. It freezes native
+  revision and comment evidence, the Current/Original pages it actually read,
+  coverage gaps, and a before/after consistency probe. It does not write,
+  accept, reject, resolve, or call a model.
+- A failed read, an unsupported story, an unfinished page, or zero native rows
+  stays explicit. None of those is a full-file pass or a claim that revisions
+  are absent. Empty `Deleted.text` is retained. Word authors stay separate from
+  the file submitter. The audit snapshot is not write authority.
+- Offline coverage is in `docs/REDLINE-REVIEW-PROGRESS.md`. Native macOS Word
+  was not run. `release/approved-files.json` was not regenerated.
+
 ## 0.2.0-preview.4 — 2026-10-14 — GitHub source publication
 
 - Owner authorized source publication at brucecbi/office-codebuddy. Created the

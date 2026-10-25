@@ -1,5 +1,73 @@
 # Candidate test summary — 0.2.0-preview.4 — 2026-10-12
 
+## P1A source-review wrap-up — 2026-10-25
+
+Source review of `513d51bdb6dccb12ae8b99dbb8b1251643cd1899` passed. The complete
+Current read versus closing-probe comparison is closed. This wrap-up only
+refreshes the reviewed allowlist. Production logic is unchanged. No P1B, no
+installer, no model, and no Mac Word run.
+
+Cancellation is checked between audit phases and between pages. A
+`toolDocumentMap` enumeration that has already started may finish.
+
+The `check:release` FAIL entries in the sections below stay historical. They
+were recorded before `release/approved-files.json` was refreshed.
+
+| Layer                   | Status         | Actual result                                                                                                                      |
+| ----------------------- | -------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `npm test`              | PASS           | 550/550, zero failures, zero skips. Node v22.23.4. About 4.99 seconds.                                                             |
+| `npm run format:check`  | PASS           | Prettier 3.8.3.                                                                                                                    |
+| `npm run check:release` | PASS           | 203 files visited, 0 errors, after the allowlist refresh. The manifest excludes itself. Earlier FAIL sections below are unchanged. |
+| Native macOS Word       | NATIVE_NOT_RUN | Not run.                                                                                                                           |
+
+## Complete-read probe check — 2026-10-25
+
+A finished Current read must match the closing probe's full paragraph list.
+Unfinished pages still compare only the range already read. Cancellation
+remains a between-phase and between-page check. `toolDocumentMap` may finish
+an enumeration already in progress. No P1B, no manifest regeneration, no
+model, and no Mac Word run.
+
+| Layer                   | Status         | Actual result                                                                                                                                |
+| ----------------------- | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm test`              | PASS           | 550/550, zero failures, zero skips, about 5.16 seconds. Node v22.23.4.                                                                       |
+| `npm run format:check`  | PASS           | Prettier 3.8.3.                                                                                                                              |
+| `npm run check:release` | FAIL           | 203 files visited, 20 errors: 16 hash mismatches and 4 files not on the manifest. The manifest was not regenerated. Not a product-test pass. |
+| Native macOS Word       | NATIVE_NOT_RUN | Not run this turn.                                                                                                                           |
+
+## Redline audit review follow-up — 2026-10-25
+
+Same branch `cursor/redline-review-p1a-7aa1`. Four review fixes only. No P1B,
+no manifest regeneration, no model, and no Mac Word run.
+
+| Layer                                           | Status         | Actual result                                                                                                                                                                                                                                                                                                 |
+| ----------------------------------------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm test`                                      | PASS           | 547/547, zero failures, zero skips, about 5.21 seconds. Node v22.23.4. Four regressions covered retained XML with zero native rows, a mismatched unfinished page, both MCP hash projections, and cancellation between phases. Cancellation does not stop a `toolDocumentMap` enumeration already in progress. |
+| `npm run format:check`                          | PASS           | Prettier 3.8.3, checked after this summary was formatted.                                                                                                                                                                                                                                                     |
+| `npm run check:release`                         | FAIL           | 203 files visited, 20 errors: 16 hash mismatches and 4 files not on the manifest. The manifest was not regenerated. This is not a product-test pass.                                                                                                                                                          |
+| Native macOS Word / Excel / Electron / provider | NATIVE_NOT_RUN | Unchanged. The October 24 offline run below is not Mac acceptance either.                                                                                                                                                                                                                                     |
+
+## Redline audit P1A — 2026-10-24 cloud offline run
+
+This run adds the read-only single-story audit on branch
+`cursor/redline-review-p1a-7aa1`. It does not replace the October native
+results below and does not accept macOS Word, Electron, or another machine.
+Dependencies were installed with `npm ci` from the pinned lockfile on Node
+22.23.4 and npm 10.9.9. No model request, Office registration, installer,
+GitHub Actions workflow, or dependency upgrade was run.
+
+| Layer                                           | Status         | Actual result                                                                                                                                                |
+| ----------------------------------------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `npm test`                                      | PASS           | 543/543, zero failures, zero skips, about 4.94 seconds. The previous offline total on this tree was 526; the new tests are the redline audit and its wiring. |
+| `npm run format:check`                          | PASS           | Prettier 3.8.3, all matched files formatted.                                                                                                                 |
+| `npm run check:release`                         | FAIL           | 203 files visited, 20 errors: 16 hash mismatches and 4 new files not on the manifest. The manifest was not regenerated.                                      |
+| Native macOS Word / Excel / Electron / provider | NATIVE_NOT_RUN | Cloud offline fixtures are not Mac Word acceptance.                                                                                                          |
+| Fresh installer / another Mac / Intel / Windows | NOT_RUN        | Out of scope for this batch.                                                                                                                                 |
+
+Historical sections below stay historical. A later native run has to record its
+own Word version, sample, and result. Details and the Mac checklist are in
+`docs/REDLINE-REVIEW-PROGRESS.md`.
+
 ## GitHub publication checks — 2026-10-14
 
 The owner authorized publication execution and source push. The independent

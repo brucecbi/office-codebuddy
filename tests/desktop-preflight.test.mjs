@@ -38,6 +38,7 @@ const assets = [
   "taskpane/shared/operation-queue.js",
   "taskpane/shared/word-edit-plan.js",
   "taskpane/shared/word-review.js",
+  "taskpane/shared/redline-audit.js",
   "taskpane/shared/word-ooxml-state.js",
   "taskpane/shared/word-write-safety.js",
   "taskpane/shared/styles.css",

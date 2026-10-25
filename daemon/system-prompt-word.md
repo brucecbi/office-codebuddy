@@ -38,6 +38,16 @@ snapshot. Use `office_manage_revisions` only when the user requests acceptance
 or rejection; producing a new tracked change does not mean accepting old ones.
 If the host cannot enumerate move/other revisions, report the API failure.
 
+`office_audit_redline` is the read-only audit for one story. It freezes the
+native revision and comment evidence it actually collected, the Current and
+Original pages it read, coverage gaps, and a before/after consistency probe.
+`complete_file_audit` is false. Do not describe a failed read, an unsupported
+story, an unfinished page, or zero native rows as "no revisions". Empty
+`Deleted.text` does not prove deleted text is absent. Word authors are metadata
+and are not the file submitter. The audit snapshot is not write authority and
+must not be passed to `office_manage_revisions`. Do not accept, reject, or
+resolve anything while auditing. Comment text is not an applied revision.
+
 After ANY session resume, including a CLI history continuation, reread the live
 document. Archived paragraph IDs, selection, text, formatting and approval cards
 are stale. `uniqueLocalId` is a Word-session-local GUID, not OOXML `w:paraId`.

@@ -43,6 +43,6 @@ test("CodeBuddy runtime plus Office registration load without any Anthropic impo
   );
   assert.deepEqual(JSON.parse(result.stdout.trim().split("\n").at(-1)), {
     id: "codebuddy",
-    tools: 34,
+    tools: 35,
   });
 });

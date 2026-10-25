@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "candidateVersion": "0.2.0-preview.4",
-  "scope": "Source-only Office CodeBuddy macOS Developer Preview. Owner authorized public publication on 2026-10-14. Independent history and approved public author/committer identity; GitHub private reporting enabled and checked. Exact published commit/tree and remote readback are recorded in the local publication receipt. No vendor payload or private development history imported; no App/DMG distribution, CI or npm publication.",
+  "scope": "Source-only Office CodeBuddy macOS Developer Preview. Owner authorized public publication on 2026-10-14. Independent history and approved public author/committer identity; GitHub private reporting enabled and checked. Exact published commit/tree and remote readback are recorded in the local publication receipt. No vendor payload or private development history imported; no App/DMG distribution, CI or npm publication. The 2026-10-25 P1A redline-audit source review is included in this allowlist. Native macOS Word acceptance of that audit was not run. The manifest excludes itself.",
   "files": [
     {
       "path": ".gitignore",
@@ -10,8 +10,8 @@
     },
     {
       "path": ".prettierignore",
-      "bytes": 582,
-      "sha256": "dd1fb6d979f055fd0fd425174bc5065056f16f22373f03969ab457d03f4f5725"
+      "bytes": 666,
+      "sha256": "df64095ed70fbda3a41045814db9e30750a203a13c29547202680dbef76546ea"
     },
     {
       "path": ".prettierrc",
@@ -20,8 +20,8 @@
     },
     {
       "path": "AGENTS.md",
-      "bytes": 1286,
-      "sha256": "10fab16d52fee8f8b0677116e97cbca8566ede7c070f08b8b61b4a1fcaecda92"
+      "bytes": 1793,
+      "sha256": "5c4e0ee0403531f9bf9cd26d43d188ca3a8017b277a4eab6ccde40f8fd282979"
     },
     {
       "path": "app/addin-guidance.mjs",
@@ -55,8 +55,8 @@
     },
     {
       "path": "app/desktop-preflight.mjs",
-      "bytes": 8442,
-      "sha256": "836a9d62da99743bdee5d01ede073bfcfffa79538328e073318ba8d1c95f4a1b"
+      "bytes": 8480,
+      "sha256": "5378fb99e8bea987a44a6ed8a9f95263b7db6846fcc467288473d1724ab865e0"
     },
     {
       "path": "app/desktop-status-preload.cjs",
@@ -155,8 +155,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 13112,
-      "sha256": "35df9ec3cfcb3454e11d403fe85b93ec182de26f371fa31ad4c845c1a0881c4d"
+      "bytes": 15738,
+      "sha256": "cdde0c3042664456f2d18b9b63d16ddbea6218bfb79fab0b4bb6a0843b0f7eb6"
     },
     {
       "path": "CLAUDE.md",
@@ -205,13 +205,13 @@
     },
     {
       "path": "daemon/office-read-only.mjs",
-      "bytes": 803,
-      "sha256": "a0061b9768593b21ae82f7704ce782313a4e810155a0dbe32f56e03a0c2fc1b8"
+      "bytes": 829,
+      "sha256": "ddb51c4e2da36fd09e484b479908af60c9f57b4e52b5e166380e677c47e86e45"
     },
     {
       "path": "daemon/office-tools.mjs",
-      "bytes": 47213,
-      "sha256": "d97df1991699dc08cf83180d85babb93165a82b4414ba7c52b70749cd2270feb"
+      "bytes": 47988,
+      "sha256": "4eda80bd44daba204b58bfba8cc11a7b3991d5d63bbd6f2194499e5b27173668"
     },
     {
       "path": "daemon/permission-guard.mjs",
@@ -325,8 +325,8 @@
     },
     {
       "path": "daemon/system-prompt-word.md",
-      "bytes": 13203,
-      "sha256": "3c6bcaa56cdbcf7c1653769dfb2139de24311dafc5fc184e32d8fdc74a13af3d"
+      "bytes": 13890,
+      "sha256": "0df9ac10b5e5250b60de978d7f0c9977d06443d46b71174110f38e7ab5b4aeaf"
     },
     {
       "path": "daemon/system-prompt.md",
@@ -357,6 +357,16 @@
       "path": "docs/RECOVERY.md",
       "bytes": 3189,
       "sha256": "9912a6d6a3ca257da19020f4bb10691f913432905d564c0816952b0cae765b2e"
+    },
+    {
+      "path": "docs/REDLINE-REVIEW-PLAN.md",
+      "bytes": 28148,
+      "sha256": "9175310266df32fb536b989bf127ae66a5e48ebc0e5d734b3cac8fe75d6ce168"
+    },
+    {
+      "path": "docs/REDLINE-REVIEW-PROGRESS.md",
+      "bytes": 16565,
+      "sha256": "e7771b28c65cc41b1eeff501400b5610975c71ad3527f8b7b20baa9bf417572b"
     },
     {
       "path": "docs/SECURITY-AND-PRIVACY.md",
@@ -429,9 +439,14 @@
       "sha256": "647f8178b6494adc4ba6c47b942018b555332549f54f8b7ba0e55b4fb732dbdd"
     },
     {
+      "path": "release/PRIVACY-REVIEW.md",
+      "bytes": 2339,
+      "sha256": "68140dd059c54ddee24b15dbe18121e1dc2f856f852006b8ce16e4adb63e6323"
+    },
+    {
       "path": "release/TEST-SUMMARY.md",
-      "bytes": 39517,
-      "sha256": "1ef2a0efe73497a7948fa580480df12910b9f87213f5a3b021345a30e0d911ac"
+      "bytes": 47365,
+      "sha256": "50d1a094270bdb641a7fe3c8300dc64480981aab9d9f1f9d4a39301954bb67db"
     },
     {
       "path": "release/VENDOR-CLARIFICATION.md",
@@ -470,8 +485,8 @@
     },
     {
       "path": "scripts/native-word-qa.mjs",
-      "bytes": 13336,
-      "sha256": "c7aa05395d6f5d084c088e5749e3e11295cab15a4233f0eec61680fff6aded68"
+      "bytes": 13370,
+      "sha256": "310d8191f46ab4fda8fe62c706417cdc0d27527a92ca99eee7300a1de1893f33"
     },
     {
       "path": "scripts/native-write-boundary-checks.js",
@@ -524,14 +539,19 @@
       "sha256": "1ee2d4ea94baea0de0ca6d357a4c6dc878d3a56836204e1cabc1f7252eb7d8a8"
     },
     {
+      "path": "taskpane/shared/redline-audit.js",
+      "bytes": 47182,
+      "sha256": "82a8cc4a556007882c5fb5ba368fe306c2ac6f47cdfe4c3842e7af2b15256c07"
+    },
+    {
       "path": "taskpane/shared/styles.css",
       "bytes": 25180,
       "sha256": "cde1fb9642e096e47423fe3b4f3be10c107fcc292e94b6a11a5890dc92de7a57"
     },
     {
       "path": "taskpane/shared/taskpane.js",
-      "bytes": 121030,
-      "sha256": "08c93f947f17087bc864a19f6986f8d354f845288bed7248c71ba280d08fd12b"
+      "bytes": 121242,
+      "sha256": "419bc9f746c60af16686ec5eedf1d8cedccdd0f3f6d45ff43b489a10fbdcf5c0"
     },
     {
       "path": "taskpane/shared/tools-excel.js",
@@ -555,8 +575,8 @@
     },
     {
       "path": "taskpane/shared/word-review.js",
-      "bytes": 36295,
-      "sha256": "7bdc9dcd4700687daf033d8d40b99158a4db937a9123af20fd38851df1bfc330"
+      "bytes": 45363,
+      "sha256": "11ef4dd685ac8fd8cb89b2744562417898109bc72d81cd98c221b783bcb6f370"
     },
     {
       "path": "taskpane/shared/word-write-safety.js",
@@ -655,8 +675,8 @@
     },
     {
       "path": "tests/desktop-preflight.test.mjs",
-      "bytes": 12392,
-      "sha256": "32e46b103d1fba896ca75066287d83a4343b55fee0cef43a9e5a855584b0337e"
+      "bytes": 12430,
+      "sha256": "d8761abcd7203557d79564f9c7e637c3d2c52ebaa7b19da0f1d3bf099d0b6a74"
     },
     {
       "path": "tests/desktop-status-window.test.mjs",
@@ -780,13 +800,13 @@
     },
     {
       "path": "tests/office-read-only.test.mjs",
-      "bytes": 1223,
-      "sha256": "cac638966d9e98c9fe30bfb7e2df063676016fd751a5cfab33b064f205f54ee5"
+      "bytes": 1681,
+      "sha256": "2d2deff2c53090d42ab1c6e94e43e2b5bc5efcf084c678f4c154c745e164467a"
     },
     {
       "path": "tests/office-schema.test.mjs",
-      "bytes": 6073,
-      "sha256": "2b9688d7b2030c06bc51490b0d795e4b0c14bcdb0b1e9af44071fdfa3f3b1057"
+      "bytes": 6103,
+      "sha256": "12d5a1e5e6d3447428d3dceb4554ca388cee4522e57c7dfabd31a07b92768f59"
     },
     {
       "path": "tests/pane-disconnect-electron-e2e.mjs",
@@ -864,6 +884,11 @@
       "sha256": "cc6ce99bc4045282cad137eb932b46f2b7eef34f3b179a5fcf431b3bd606f671"
     },
     {
+      "path": "tests/redline-audit.test.mjs",
+      "bytes": 31564,
+      "sha256": "5f3a3b85d69984b6d361b53d205be3322174ed71c40260c0685e847582198ce6"
+    },
+    {
       "path": "tests/regular-file.test.mjs",
       "bytes": 4066,
       "sha256": "d79f7464cc1b59e7d703d02b946db7320b9ee2009daab46a8550e0c49b615f88"
@@ -881,7 +906,7 @@
     {
       "path": "tests/runtime-select.test.mjs",
       "bytes": 2364,
-      "sha256": "0f27679c07d52feb91c0d329c98b25fbb479858d0b4a11c635d2d5c94c7a1869"
+      "sha256": "d09f3a7854af825cf7f91338a9b36424f758f1c308c44bf32d1147c9fb5984f8"
     },
     {
       "path": "tests/session-archive.test.mjs",
@@ -965,8 +990,8 @@
     },
     {
       "path": "tests/word-review.test.mjs",
-      "bytes": 21433,
-      "sha256": "41f767dc49b9c3b06a2f05f20a48c761df06ea10761a9a49a0f4f1fcf4a5d428"
+      "bytes": 29672,
+      "sha256": "23cd82980683a8fa49fd4f459186f95c4553c38235e25c16a21089588346f3a9"
     },
     {
       "path": "tests/word-safety.test.mjs",
@@ -992,11 +1017,6 @@
       "path": "UPSTREAM.md",
       "bytes": 1615,
       "sha256": "a6aae0a28486217b677bce8550c9cd75551e93776e5e84fa32da417e4a1d58b2"
-    },
-    {
-      "path": "release/PRIVACY-REVIEW.md",
-      "bytes": 2339,
-      "sha256": "68140dd059c54ddee24b15dbe18121e1dc2f856f852006b8ce16e4adb63e6323"
     }
   ]
 }
