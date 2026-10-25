@@ -3,6 +3,44 @@
 P1A only: a read-only audit foundation for one Word document with multi-author
 revisions. Later phases in `docs/REDLINE-REVIEW-PLAN.md` are not started.
 
+## Review follow-up — 2026-10-25
+
+Four findings on `cursor/redline-review-p1a-7aa1`. P1B was not started.
+
+1. Current and Original pages are returned as `story_pages`, each bound to the
+   audit `snapshot_id`. Range OOXML requested with `include_ooxml: true` is
+   returned as `ooxml_evidence`. Story OOXML that contains `w:ins` or `w:del`
+   markup is kept the same way, including when the native collection returned
+   zero rows. `coverage.evidence_ids` for those reads point at those rows.
+   Regression: `zero native rows keep story XML that contains a deletion and
+pages point at real evidence`.
+2. Unfinished Current pages are compared with the same slice of the closing
+   probe. Regression: `an unfinished page that disagrees with the closing
+probe is not a probe match`. Before and after probes are `A`, the page read
+   is `B`, and `evidence_probe_matched` is false. A matching prefix still
+   matches and still does not make `complete_file_audit` true.
+3. `full_snapshot_sha256` is the hash of the taskpane result including raw
+   `ooxml`, excluding both hash fields. `evidence_sha256` is the hash of the
+   default MCP projection: raw `ooxml` strings removed, `ooxml_omitted` and
+   `ooxml_chunk_length` recorded, and `ooxml_access` included when anything was
+   omitted, again excluding both hash fields. Regression:
+   `default and explicit OOXML projections hash the assembler result the MCP
+bridge returns`. It runs `buildRedlineAudit` through `createOfficeBridgeMcp`
+   for both `{}` and `{ include_ooxml: true }`.
+4. The queue `guard` is passed into `toolAuditRedline` and checked before each
+   probe section, between phases, and before each story or OOXML page.
+   `CANCELLED_OR_EXPIRED` is rethrown. Regression: `cancelling an audit starts
+no further Word.run and a later queued task still runs`.
+
+| Command                 | Result                                                                                                                                                                                 |
+| ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm test`              | PASS. 547 passed, 0 failed, 0 skipped. About 5.21 seconds. Node v22.23.4.                                                                                                              |
+| `npm run format:check`  | PASS after this section was formatted. Prettier 3.8.3.                                                                                                                                 |
+| `npm run check:release` | FAIL. 203 files visited, 20 errors: 16 `hash-mismatch` and 4 `not-allowlisted`. No missing, symlink, or credential finding. The manifest was not regenerated. Not a product-test pass. |
+| Mac Word                | NATIVE_NOT_RUN                                                                                                                                                                         |
+
+The 2026-10-24 section below is the first P1A run, not this follow-up.
+
 Baseline observed at start: `main` at `c79441f0a8d727e735c393741dace4b0d79e2573`,
 clean worktree, Node v22.23.4. That commit was not used as a rollback target.
 

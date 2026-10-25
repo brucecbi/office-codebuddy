@@ -4,6 +4,7 @@
 // proven explanation for provider 400s. Tool schema validation is independent.
 import { z } from "zod";
 import { diag } from "./diag.mjs";
+import { projectModelOoxml } from "../taskpane/shared/redline-audit.js";
 
 const COMPACT_REVIEW_RESULTS = new Set([
   "office_read_formatting",
@@ -30,30 +31,7 @@ function modelReviewResult(name, args, result) {
       ["ooxml_offset", "ooxml_limit", "snapshot_id"].some((key) => args?.[key] !== undefined))
   )
     return result;
-  let omitted = 0;
-  function project(value) {
-    if (Array.isArray(value)) return value.map(project);
-    if (!value || typeof value !== "object") return value;
-    const entries = Object.entries(value)
-      .filter(([key, item]) => {
-        if (key !== "ooxml" || typeof item !== "string") return true;
-        omitted++;
-        return false;
-      })
-      .map(([key, item]) => [key, project(item)]);
-    if (typeof value.ooxml === "string") {
-      entries.push(["ooxml_omitted", true], ["ooxml_chunk_length", value.ooxml.length]);
-    }
-    return Object.fromEntries(entries);
-  }
-  const projected = project(result);
-  return omitted
-    ? {
-        ...projected,
-        ooxml_access:
-          "Default model result omits raw OOXML only. For exact XML use office_list_comments, office_read_revisions, or office_audit_redline with include_ooxml:true, or office_read_formatting with include_ooxml:true and small paged ooxml_limit (e.g. 8000). Native verification still used the complete snapshot.",
-      }
-    : result;
+  return projectModelOoxml(result);
 }
 
 // Wrap a bridge tool result for MCP. Handlers return {content: [...]}.

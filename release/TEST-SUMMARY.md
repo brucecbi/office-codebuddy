@@ -1,5 +1,17 @@
 # Candidate test summary — 0.2.0-preview.4 — 2026-10-12
 
+## Redline audit review follow-up — 2026-10-25
+
+Same branch `cursor/redline-review-p1a-7aa1`. Four review fixes only. No P1B,
+no manifest regeneration, no model, and no Mac Word run.
+
+| Layer                                           | Status         | Actual result                                                                                                                                                                                                                                |
+| ----------------------------------------------- | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm test`                                      | PASS           | 547/547, zero failures, zero skips, about 5.21 seconds. Node v22.23.4. Four new regressions cover retained XML with zero native rows, a mismatched unfinished page, both MCP hash projections, and cancel stopping further `Word.run` calls. |
+| `npm run format:check`                          | PASS           | Prettier 3.8.3, checked after this summary was formatted.                                                                                                                                                                                    |
+| `npm run check:release`                         | FAIL           | 203 files visited, 20 errors: 16 hash mismatches and 4 files not on the manifest. The manifest was not regenerated. This is not a product-test pass.                                                                                         |
+| Native macOS Word / Excel / Electron / provider | NATIVE_NOT_RUN | Unchanged. The October 24 offline run below is not Mac acceptance either.                                                                                                                                                                    |
+
 ## Redline audit P1A — 2026-10-24 cloud offline run
 
 This run adds the read-only single-story audit on branch

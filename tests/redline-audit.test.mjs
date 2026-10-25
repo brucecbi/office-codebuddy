@@ -4,6 +4,8 @@ import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import {
   buildRedlineAudit,
+  canonicalJson,
+  projectModelOoxml,
   semanticComment,
   semanticRevision,
   sha256Hex,
@@ -131,7 +133,14 @@ test("partial native replacements keep empty deletions and do not merge repeated
   assert.equal(audit.mappings[0].count_equality_is_completeness, false);
   assert.equal(audit.mappings[0].status, "unresolved");
   assert.match(audit.mappings[0].note, /not proof that deleted text is absent/);
-  assert.equal(JSON.stringify(audit).includes(story), false);
+  const storyXml = audit.ooxml_evidence.find((item) => item.kind === "story_getOoxml_not_docx_zip");
+  assert.equal(storyXml.ooxml, story);
+  assert.equal(storyXml.snapshot_id, audit.snapshot_id);
+  assert.ok(
+    audit.coverage.entries
+      .find((entry) => entry.capability === "revisions")
+      .evidence_ids.includes(storyXml.evidence_id),
+  );
   assert.equal(audit.claims_no_revisions, false);
   assert.equal(audit.complete_file_audit, false);
   assert.equal(audit.usable_for_writes, false);
@@ -201,7 +210,14 @@ test("recorded native markup that outnumbers rows stays unresolved", () => {
   assert.equal(audit.mappings[0].counts_equal, false);
   assert.equal(audit.mappings[0].status, "unresolved");
   assert.equal(audit.mappings[0].count_equality_is_completeness, false);
-  assert.equal(JSON.stringify(audit).includes(data.before.slice(0, 180)), false);
+  const storyXml = audit.ooxml_evidence.find((item) => item.kind === "story_getOoxml_not_docx_zip");
+  assert.ok(storyXml.ooxml.includes(data.before.slice(0, 180)));
+  assert.equal(storyXml.snapshot_id, "snap-1");
+  assert.ok(
+    audit.coverage.entries
+      .find((entry) => entry.capability === "revisions")
+      .evidence_ids.includes(storyXml.evidence_id),
+  );
   assert.equal(audit.claims_no_revisions, false);
   assert.ok(
     audit.findings.some((finding) => /not proof that deleted text is absent/.test(finding.detail)),
@@ -534,5 +550,246 @@ test("the audit tool is registered read-only and omits raw OOXML unless requeste
       anchor_queries: ["同意。"],
     }).success,
     true,
+  );
+});
+
+function evidenceIndex(audit) {
+  const ids = new Set();
+  for (const page of audit.story_pages) ids.add(page.evidence_id);
+  for (const revision of audit.revisions) ids.add(revision.evidence_id);
+  for (const comment of audit.comments) {
+    ids.add(comment.evidence_id);
+    for (const reply of comment.replies) ids.add(reply.evidence_id);
+  }
+  for (const item of audit.ooxml_evidence) ids.add(item.evidence_id);
+  return ids;
+}
+
+test("zero native rows keep story XML that contains a deletion and pages point at real evidence", () => {
+  const deleted =
+    '<w:p><w:del w:author="甲"><w:r><w:delText>已删除条款</w:delText></w:r></w:del></w:p>';
+  const audit = buildRedlineAudit(
+    base({
+      story_reads: [
+        {
+          target: { story: "body" },
+          version: "Current",
+          pages: [
+            {
+              offset: 0,
+              next_offset: null,
+              total: 1,
+              paragraphs: [{ index: 0, id: "P1", style: "Normal", text: "现行条款" }],
+            },
+          ],
+        },
+        {
+          target: { story: "body" },
+          version: "Original",
+          pages: [
+            {
+              offset: 0,
+              next_offset: null,
+              total: 1,
+              paragraphs: [{ index: 0, id: "P1", style: "Normal", text: "已删除条款" }],
+            },
+          ],
+        },
+      ],
+      revision_reads: [
+        {
+          target: { story: "body" },
+          revisions: [],
+          enumeration_complete: false,
+          story_ooxml: deleted,
+        },
+      ],
+      formatting_reads: [
+        {
+          target: { story: "body" },
+          pages: [
+            {
+              ooxml: "<w:del><w:delText>范围删除</w:delText></w:del>",
+              ooxml_offset: 0,
+              ooxml_length: 48,
+              next_ooxml_offset: null,
+            },
+          ],
+        },
+      ],
+    }),
+  );
+  assert.equal(audit.summary.native_revision_rows, 0);
+  assert.equal(audit.revisions.length, 0);
+  assert.equal(audit.claims_no_revisions, false);
+  assert.equal(audit.complete_file_audit, false);
+  const storyXml = audit.ooxml_evidence.find((item) => item.kind === "story_getOoxml_not_docx_zip");
+  assert.ok(storyXml.ooxml.includes("已删除条款"));
+  assert.equal(storyXml.snapshot_id, audit.snapshot_id);
+  assert.equal(storyXml.retains_markup_without_native_row, true);
+  const rangeXml = audit.ooxml_evidence.find((item) => item.kind === "range_getOoxml_not_docx_zip");
+  assert.ok(rangeXml.ooxml.includes("范围删除"));
+  assert.equal(rangeXml.snapshot_id, audit.snapshot_id);
+  const revisionCoverage = audit.coverage.entries.find((entry) => entry.capability === "revisions");
+  assert.ok(revisionCoverage.evidence_ids.includes(storyXml.evidence_id));
+  const known = evidenceIndex(audit);
+  for (const entry of audit.coverage.entries) {
+    for (const id of entry.evidence_ids) assert.ok(known.has(id), id);
+  }
+  for (const version of ["Current", "Original"]) {
+    const coverage = audit.coverage.entries.find(
+      (entry) => entry.capability === "story_text" && entry.version === version,
+    );
+    assert.equal(coverage.evidence_ids.length, 1);
+    const page = audit.story_pages.find((item) => item.evidence_id === coverage.evidence_ids[0]);
+    assert.equal(page.snapshot_id, audit.snapshot_id);
+    assert.equal(page.version, version);
+    assert.equal(page.paragraphs.length, 1);
+  }
+  const rangeCoverage = audit.coverage.entries.find((entry) => entry.capability === "range_ooxml");
+  assert.deepEqual(rangeCoverage.evidence_ids, [rangeXml.evidence_id]);
+});
+
+test("an unfinished page that disagrees with the closing probe is not a probe match", () => {
+  const matched = probe({
+    paragraphs: [
+      { id: "P1", text: "A" },
+      { id: "P2", text: "A2" },
+    ],
+  });
+  const agreed = buildRedlineAudit(
+    base({
+      story_reads: [
+        {
+          target: { story: "body" },
+          version: "Current",
+          pages: [
+            {
+              offset: 0,
+              next_offset: 1,
+              total: 2,
+              paragraphs: [{ index: 0, id: "P1", text: "A" }],
+            },
+          ],
+        },
+      ],
+      revision_reads: [{ target: { story: "body" }, revisions: [], enumeration_complete: false }],
+      comment_reads: [{ target: { story: "body" }, comments: [] }],
+      consistency: { before: matched, after: matched, prior_snapshot: null },
+    }),
+  );
+  assert.equal(agreed.snapshot.consistency.evidence_probe_matched, true);
+  assert.equal(agreed.story_pages[0].paragraphs[0].text, "A");
+  assert.equal(
+    agreed.coverage.entries.find((entry) => entry.version === "Current").paging_complete,
+    false,
+  );
+
+  const disagreed = buildRedlineAudit(
+    base({
+      snapshot_id: "snap-mismatch",
+      story_reads: [
+        {
+          target: { story: "body" },
+          version: "Current",
+          pages: [
+            {
+              offset: 0,
+              next_offset: 1,
+              total: 2,
+              paragraphs: [{ index: 0, id: "P1", text: "B" }],
+            },
+          ],
+        },
+      ],
+      revision_reads: [{ target: { story: "body" }, revisions: [], enumeration_complete: false }],
+      comment_reads: [{ target: { story: "body" }, comments: [] }],
+      consistency: { before: matched, after: matched, prior_snapshot: null },
+    }),
+  );
+  assert.equal(disagreed.snapshot.consistency.evidence_probe_matched, false);
+  assert.notEqual(disagreed.snapshot.consistency.state, "limited_reread_match");
+  assert.equal(disagreed.story_pages[0].paragraphs[0].text, "B");
+  assert.equal(disagreed.story_pages[0].snapshot_id, "snap-mismatch");
+  assert.equal(disagreed.complete_file_audit, false);
+});
+
+test("default and explicit OOXML projections hash the assembler result the MCP bridge returns", async () => {
+  const audit = buildRedlineAudit(
+    base({
+      revision_reads: [
+        {
+          target: { story: "body" },
+          revisions: [],
+          enumeration_complete: false,
+          story_ooxml: "<w:p><w:del><w:delText>已删除条款</w:delText></w:del></w:p>",
+        },
+      ],
+      story_reads: [
+        {
+          target: { story: "body" },
+          version: "Current",
+          pages: [
+            {
+              offset: 0,
+              next_offset: null,
+              total: 1,
+              paragraphs: [{ index: 0, id: "P1", text: "现行" }],
+            },
+          ],
+        },
+      ],
+    }),
+  );
+  assert.match(audit.snapshot.source.full_snapshot_sha256_covers, /including raw ooxml/);
+  assert.match(audit.snapshot.source.evidence_sha256_covers, /raw ooxml strings removed/);
+  assert.notEqual(
+    audit.snapshot.source.evidence_sha256,
+    audit.snapshot.source.full_snapshot_sha256,
+  );
+  const withoutHashes = (value) => {
+    const copy = structuredClone(value);
+    delete copy.snapshot.source.evidence_sha256;
+    delete copy.snapshot.source.full_snapshot_sha256;
+    return copy;
+  };
+  assert.equal(
+    sha256Hex(canonicalJson(withoutHashes(audit))),
+    audit.snapshot.source.full_snapshot_sha256,
+  );
+  assert.equal(
+    sha256Hex(canonicalJson(projectModelOoxml(withoutHashes(audit)))),
+    audit.snapshot.source.evidence_sha256,
+  );
+
+  const { createOfficeBridgeMcp } = await import("../daemon/office-tools.mjs");
+  const { mcp } = await import("../daemon/runtime/runtime-codebuddy.mjs");
+  const server = createOfficeBridgeMcp(
+    { callTaskpaneTool: async () => audit },
+    "word",
+    "pane",
+    mcp,
+  );
+  const handler = server.instance._registeredTools.office_audit_redline.handler;
+  const slim = JSON.parse((await handler({}, {})).content[0].text);
+  const full = JSON.parse((await handler({ include_ooxml: true }, {})).content[0].text);
+  assert.equal(slim.ooxml_evidence[0].ooxml, undefined);
+  assert.equal(slim.ooxml_evidence[0].ooxml_omitted, true);
+  assert.equal(slim.story_pages[0].paragraphs[0].text, "现行");
+  assert.match(slim.ooxml_access, /omits raw OOXML only/);
+  assert.equal(sha256Hex(canonicalJson(withoutHashes(slim))), slim.snapshot.source.evidence_sha256);
+  assert.ok(full.ooxml_evidence[0].ooxml.includes("已删除条款"));
+  assert.equal(
+    sha256Hex(canonicalJson(withoutHashes(full))),
+    full.snapshot.source.full_snapshot_sha256,
+  );
+  assert.equal(full.snapshot.source.evidence_sha256, audit.snapshot.source.evidence_sha256);
+  assert.equal(
+    full.snapshot.source.full_snapshot_sha256,
+    audit.snapshot.source.full_snapshot_sha256,
+  );
+  assert.notEqual(
+    sha256Hex(canonicalJson(withoutHashes(full))),
+    full.snapshot.source.evidence_sha256,
   );
 });

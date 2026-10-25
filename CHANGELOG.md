@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.2.0-preview.4 — 2026-10-25 — redline audit review fixes
+
+- Kept Current/Original pages and requested range OOXML on the audit snapshot.
+  Coverage ids point at those evidence rows. Story OOXML that contains revision
+  markup is kept when the native collection does not account for it, including
+  zero native rows with deleted markup.
+- An unfinished story page is compared with the closing probe. A page that
+  disagrees with that probe is not `evidence_probe_matched`.
+- `full_snapshot_sha256` covers the taskpane result including raw OOXML.
+  `evidence_sha256` covers the default MCP projection that omits raw OOXML.
+  Both hashes exclude themselves.
+- The operation-queue cancel guard is checked between audit phases and pages.
+  Cancellation stops the audit immediately and does not block a later task.
+
 ## 0.2.0-preview.4 — 2026-10-24 — single-document redline audit
 
 - Added read-only `office_audit_redline` for one Word story. It freezes native

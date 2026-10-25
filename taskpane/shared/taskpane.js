@@ -1652,7 +1652,7 @@ async function executeOfficeTool(msg, control) {
         result = await toolReadRevisions(args);
         break;
       case "office_audit_redline":
-        result = await toolAuditRedline(args);
+        result = await toolAuditRedline(args, control);
         break;
       case "office_get_selection":
         result = await toolGetSelection();
@@ -1982,7 +1982,7 @@ async function runOfficeTool(msg) {
         };
         if (!mutates) {
           wsSend({ type: "tool_phase", id: msg.id, turn_id: msg.turn_id, phase: "office_read" });
-          return executeOfficeTool(msg);
+          return executeOfficeTool(msg, { guard });
         }
         if (HOST === "word")
           msg = { ...msg, args: await resolveWordHeadingArgs(msg.name, msg.args || {}) };

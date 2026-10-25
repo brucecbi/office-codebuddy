@@ -5,6 +5,12 @@
 export const REDLINE_AUDIT_SCHEMA_VERSION = 1;
 export const REDLINE_AUDIT_ADAPTER = "office-codebuddy-word-review-p1a";
 export const REDLINE_AUDIT_TTL_MS = 300_000;
+export const MODEL_OOXML_ACCESS =
+  "Default model result omits raw OOXML only. For exact XML use office_list_comments, office_read_revisions, or office_audit_redline with include_ooxml:true, or office_read_formatting with include_ooxml:true and small paged ooxml_limit (e.g. 8000). Native verification still used the complete snapshot.";
+export const FULL_SNAPSHOT_SHA256_COVERS =
+  "Full taskpane audit result, including raw ooxml strings, excluding full_snapshot_sha256 and evidence_sha256.";
+export const EVIDENCE_SHA256_COVERS =
+  "Default MCP projection: raw ooxml strings removed, ooxml_omitted and ooxml_chunk_length recorded, ooxml_access included when any ooxml was omitted, excluding full_snapshot_sha256 and evidence_sha256. This is not a file hash.";
 
 const KINDS = new Set(["live_word", "synthetic_fixture", "range_ooxml", "disk_docx"]);
 const PRIOR_STATUS = new Set(["expired", "not_current", "not_verified", "matches_probe"]);
@@ -84,6 +90,29 @@ export function sha256Hex(text) {
     h7 = (h7 + h) >>> 0;
   }
   return [h0, h1, h2, h3, h4, h5, h6, h7].map((x) => x.toString(16).padStart(8, "0")).join("");
+}
+
+// Same omission the Office MCP bridge applies to compact review results.
+// The default model hash is computed from this projection, not from the raw snapshot.
+export function projectModelOoxml(result) {
+  let omitted = 0;
+  function project(value) {
+    if (Array.isArray(value)) return value.map(project);
+    if (!value || typeof value !== "object") return value;
+    const entries = Object.entries(value)
+      .filter(([key, item]) => {
+        if (key !== "ooxml" || typeof item !== "string") return true;
+        omitted++;
+        return false;
+      })
+      .map(([key, item]) => [key, project(item)]);
+    if (typeof value.ooxml === "string") {
+      entries.push(["ooxml_omitted", true], ["ooxml_chunk_length", value.ooxml.length]);
+    }
+    return Object.fromEntries(entries);
+  }
+  const projected = project(result);
+  return omitted ? { ...projected, ooxml_access: MODEL_OOXML_ACCESS } : projected;
 }
 
 export function canonicalJson(value) {
@@ -317,12 +346,18 @@ function observationsMatch(after, input) {
     if (read?.error || read?.pages?.some((page) => page?.error)) return false;
     if (read?.version !== "Current") continue;
     const pages = combinePages(read.pages || []);
-    if (!pages.paging_complete) continue;
+    if (pages.status !== "read") return false;
+    // An unfinished page is still evidence. Compare the pages already obtained
+    // with the same slice of the closing probe; do not skip that check.
     const collected = pages.paragraphs.map((paragraph) => ({
       id: paragraph.id ?? null,
       text: paragraph.text ?? null,
     }));
-    if (canonicalJson(collected) !== canonicalJson(after.paragraphs)) return false;
+    const start = Number.isInteger(pages.paragraphs[0]?.index)
+      ? pages.paragraphs[0].index
+      : (read.pages?.[0]?.offset ?? 0);
+    const probed = after.paragraphs.slice(start, start + collected.length);
+    if (canonicalJson(collected) !== canonicalJson(probed)) return false;
   }
   return true;
 }
@@ -491,37 +526,67 @@ export function buildRedlineAudit(input = {}) {
   }
 
   const storyParagraphs = { Current: [], Original: [] };
+  const storyPages = [];
   for (const read of input.story_reads || []) {
     const scope = storyScope(read.target || requested.target);
+    const version = read.version || null;
+    const successfulPages = (read.pages || []).filter((page) => page && !page.error);
+    const pageIds = [];
+    if (!read.error) {
+      for (const page of successfulPages) {
+        const offset = page.offset ?? 0;
+        const evidence_id = `page:${snapshotId}:${version || "unversioned"}:${offset}`;
+        pageIds.push(evidence_id);
+        storyPages.push({
+          evidence_id,
+          snapshot_id: snapshotId,
+          source_story: scope.target,
+          version,
+          offset,
+          next_offset: page.next_offset ?? null,
+          total: page.total ?? null,
+          addressing: page.addressing ?? null,
+          paragraphs: (page.paragraphs || []).map((paragraph) => ({
+            index: paragraph.index ?? null,
+            id: paragraph.id ?? null,
+            style: paragraph.style ?? null,
+            text: paragraph.text ?? null,
+          })),
+        });
+      }
+    }
     if (read.error) {
       const failed = failureStatus(read.error, read.unsupported);
       addEntry({
         capability: "story_text",
         scope_label: scope.label,
         target: scope.target,
-        version: read.version || null,
+        version,
         status: failed.status,
         paging_complete: false,
         reason: failed.reason,
+        evidence_ids: pageIds,
       });
       continue;
     }
     const pages = combinePages(read.pages || []);
-    if (read.version === "Current" || read.version === "Original")
-      storyParagraphs[read.version] = pages.paragraphs;
+    if (version === "Current" || version === "Original")
+      storyParagraphs[version] = pages.paragraphs;
     addEntry({
       capability: "story_text",
       scope_label: scope.label,
       target: scope.target,
-      version: read.version || null,
+      version,
       status: pages.status,
       paging_complete: pages.status === "read" ? pages.paging_complete : false,
       next_cursor: pages.next_cursor,
       reason: pages.reason,
+      evidence_ids: pageIds,
     });
   }
 
   const revisions = [];
+  const ooxmlEvidence = [];
   const mappings = [];
   let revisionSeq = 0;
   for (const read of input.revision_reads || []) {
@@ -615,12 +680,30 @@ export function buildRedlineAudit(input = {}) {
       status: counts_equal === true ? "recorded_not_a_verdict" : "unresolved",
       note: "Markup counts are recorded only. Equality is not a completeness verdict, and a missing native row is not proof that deleted text is absent.",
     };
+    const markupTotal = storyMarkup ? storyMarkup.ins + storyMarkup.del : 0;
+    if (typeof read.story_ooxml === "string" && read.story_ooxml && markupTotal > 0) {
+      const evidence_id = `xml:${snapshotId}:story:${revisionSeq - 1}`;
+      ids.push(evidence_id);
+      ooxmlEvidence.push({
+        evidence_id,
+        snapshot_id: snapshotId,
+        source_story: scope.target,
+        kind: "story_getOoxml_not_docx_zip",
+        ooxml: read.story_ooxml,
+        markup: storyMarkup,
+        native_row_count: rows.length,
+        retains_markup_without_native_row: rows.length === 0 || markupTotal !== rows.length,
+      });
+    }
     mappings.push(mapping);
+    const keptDeletion = rows.length === 0 && storyMarkup && storyMarkup.del > 0;
     const reason = enumeration_complete
       ? "The caller marked enumeration complete. P1A still does not treat that flag as a full OOXML inventory."
-      : rows.length
-        ? "Native tracked-change rows were read. enumeration_complete is false, so this is not an exhaustive inventory."
-        : "The native collection returned zero rows. enumeration_complete is false, so this is not proof of no revisions.";
+      : keptDeletion
+        ? "The native collection returned zero rows. Story OOXML still contains deletion markup and that XML is kept as evidence. This is not proof of no revisions."
+        : rows.length
+          ? "Native tracked-change rows were read. enumeration_complete is false, so this is not an exhaustive inventory."
+          : "The native collection returned zero rows. enumeration_complete is false, so this is not proof of no revisions.";
     addEntry({
       capability: "revisions",
       scope_label: scope.label,
@@ -770,6 +853,23 @@ export function buildRedlineAudit(input = {}) {
     const last = pages.at(-1);
     const started = (pages[0].ooxml_offset ?? 0) === 0;
     const paging_complete = started && last.next_ooxml_offset == null;
+    const chunkIds = [];
+    for (const page of pages) {
+      if (typeof page.ooxml !== "string") continue;
+      const offset = page.ooxml_offset ?? 0;
+      const evidence_id = `xml:${snapshotId}:range:${offset}`;
+      chunkIds.push(evidence_id);
+      ooxmlEvidence.push({
+        evidence_id,
+        snapshot_id: snapshotId,
+        source_story: scope.target,
+        kind: "range_getOoxml_not_docx_zip",
+        ooxml: page.ooxml,
+        ooxml_offset: offset,
+        ooxml_length: page.ooxml_length ?? page.ooxml.length,
+        next_ooxml_offset: page.next_ooxml_offset ?? null,
+      });
+    }
     addEntry({
       capability: "range_ooxml",
       scope_label: scope.label,
@@ -780,6 +880,7 @@ export function buildRedlineAudit(input = {}) {
       reason: paging_complete
         ? "Returned OOXML pages cover the captured range export. This is still not a DOCX ZIP."
         : "OOXML paging is incomplete. The unread remainder is not covered, and this export is not a DOCX ZIP.",
+      evidence_ids: chunkIds,
     });
   }
 
@@ -876,9 +977,14 @@ export function buildRedlineAudit(input = {}) {
   )) {
     claim({
       status: "unconfirmed",
-      evidence_ids: revisions
-        .filter((revision) => storyScope(revision.source_story).label === mapping.scope_label)
-        .map((revision) => revision.evidence_id),
+      evidence_ids: [
+        ...revisions
+          .filter((revision) => storyScope(revision.source_story).label === mapping.scope_label)
+          .map((revision) => revision.evidence_id),
+        ...ooxmlEvidence
+          .filter((item) => storyScope(item.source_story).label === mapping.scope_label)
+          .map((item) => item.evidence_id),
+      ],
       statement:
         "The relationship between native tracked-change rows and OOXML insertion/deletion markup is unresolved. Count equality is not used as the verdict.",
       unresolved: ["markup mapping"],
@@ -929,9 +1035,14 @@ export function buildRedlineAudit(input = {}) {
   )) {
     finding({
       category: "mapping_unresolved",
-      evidence_ids: revisions
-        .filter((revision) => storyScope(revision.source_story).label === mapping.scope_label)
-        .map((revision) => revision.evidence_id),
+      evidence_ids: [
+        ...revisions
+          .filter((revision) => storyScope(revision.source_story).label === mapping.scope_label)
+          .map((revision) => revision.evidence_id),
+        ...ooxmlEvidence
+          .filter((item) => storyScope(item.source_story).label === mapping.scope_label)
+          .map((item) => item.evidence_id),
+      ],
       action: "inspect_ooxml",
       detail: `Native rows ${mapping.native_row_count}; story markup ${JSON.stringify(mapping.story_markup)}; range markup ${JSON.stringify(mapping.range_markup)}. ${mapping.note}`,
     });
@@ -1062,7 +1173,8 @@ export function buildRedlineAudit(input = {}) {
         file_sha256,
         file_sha256_source,
         hash_scope,
-        evidence_sha256_covers: "audit_result_without_evidence_sha256",
+        full_snapshot_sha256_covers: FULL_SNAPSHOT_SHA256_COVERS,
+        evidence_sha256_covers: EVIDENCE_SHA256_COVERS,
         read_scope: {
           requested_target: requested.target,
           adapter: REDLINE_AUDIT_ADAPTER,
@@ -1098,6 +1210,8 @@ export function buildRedlineAudit(input = {}) {
     },
     revisions,
     comments,
+    story_pages: storyPages,
+    ooxml_evidence: ooxmlEvidence,
     mappings,
     anchors,
     claims,
@@ -1109,6 +1223,11 @@ export function buildRedlineAudit(input = {}) {
   };
   if (claimsAbsence(report))
     throw new Error("AUDIT_LANGUAGE: refused to describe missing evidence as no revisions");
-  report.snapshot.source.evidence_sha256 = sha256Hex(canonicalJson(report));
+  // Both hashes exclude themselves. evidence_sha256 covers the default MCP
+  // projection; full_snapshot_sha256 covers this object, including raw ooxml.
+  const fullSnapshotSha256 = sha256Hex(canonicalJson(report));
+  const evidenceSha256 = sha256Hex(canonicalJson(projectModelOoxml(report)));
+  report.snapshot.source.full_snapshot_sha256 = fullSnapshotSha256;
+  report.snapshot.source.evidence_sha256 = evidenceSha256;
   return report;
 }

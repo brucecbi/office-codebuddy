@@ -2,6 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { randomUUID } from "node:crypto";
 import { readFileSync } from "node:fs";
+import { createOperationQueue } from "../taskpane/shared/operation-queue.js";
 import {
   toolDocumentMap,
   toolReadStory,
@@ -689,6 +690,20 @@ test("read-only redline audit keeps authors, empty deletions and coverage limits
     audit.anchors.find((row) => row.view === "Current" && row.query === "USD 100").status,
     "found",
   );
+  const currentPage = audit.coverage.entries.find(
+    (row) =>
+      row.capability === "story_text" && row.version === "Current" && row.scope_label === "body",
+  );
+  assert.ok(currentPage.evidence_ids.length > 0);
+  assert.ok(
+    audit.story_pages.some(
+      (page) =>
+        page.evidence_id === currentPage.evidence_ids[0] &&
+        page.snapshot_id === audit.snapshot_id &&
+        page.version === "Current" &&
+        page.paragraphs[0].text === f.main.text,
+    ),
+  );
   await assert.rejects(
     prepareReviewWrite("office_manage_revisions", {
       action: "accept",
@@ -774,6 +789,40 @@ test("optional range OOXML paging stays incomplete and still performs no write",
   const xml = audit.coverage.entries.find((row) => row.capability === "range_ooxml");
   assert.equal(xml.status, "read");
   assert.equal(xml.paging_complete, false);
+  assert.ok(xml.evidence_ids.length > 0);
+  const chunk = audit.ooxml_evidence.find((item) => item.evidence_id === xml.evidence_ids[0]);
+  assert.equal(chunk.snapshot_id, audit.snapshot_id);
+  assert.equal(typeof chunk.ooxml, "string");
+  assert.ok(chunk.ooxml.length > 0);
   assert.equal(audit.complete_file_audit, false);
   assert.equal(f.writes, 0);
+});
+
+test("cancelling an audit starts no further Word.run and a later queued task still runs", async () => {
+  const f = fixture();
+  const queue = createOperationQueue();
+  const original = globalThis.Word.run;
+  let calls = 0;
+  globalThis.Word.run = async (fn) => {
+    calls += 1;
+    if (calls === 1) queue.cancel();
+    return original(fn);
+  };
+  await assert.rejects(
+    queue.run(
+      "audit-cancel",
+      { mutates: false, deadline: () => Date.now() + 60_000 },
+      ({ guard }) => toolAuditRedline({}, { guard }),
+    ),
+    /CANCELLED_OR_EXPIRED/,
+  );
+  assert.equal(calls, 1);
+  assert.equal(f.writes, 0);
+  const later = await queue.run(
+    "after-cancel",
+    { mutates: false, deadline: () => Date.now() + 60_000 },
+    async () => (await toolReadStory({ limit: 1 })).paragraphs[0].text,
+  );
+  assert.equal(later, f.main.text);
+  assert.ok(calls > 1);
 });
