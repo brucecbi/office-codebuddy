@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.0-preview.4 — 2026-10-25 — P1A source-review allowlist
+
+- Source review of the read-only redline audit is complete. Refreshed
+  `release/approved-files.json` for the reviewed tree and added the four audit
+  files. The manifest still excludes itself. No production logic change.
+- Cancellation is checked between audit phases and between pages. A
+  `toolDocumentMap` enumeration that has already started may finish.
+
 ## 0.2.0-preview.4 — 2026-10-25 — complete audit reads match the full probe
 
 - A finished Current read must match the closing probe's full paragraph list:

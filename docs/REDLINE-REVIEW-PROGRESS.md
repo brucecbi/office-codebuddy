@@ -3,6 +3,26 @@
 P1A only: a read-only audit foundation for one Word document with multi-author
 revisions. Later phases in `docs/REDLINE-REVIEW-PLAN.md` are not started.
 
+## Source-review wrap-up — 2026-10-25
+
+Source review of `513d51bdb6dccb12ae8b99dbb8b1251643cd1899` passed. The complete
+Current read versus closing-probe comparison is closed. This wrap-up does not
+change production logic.
+
+`release/approved-files.json` was refreshed for that reviewed tree. The four
+new audit files are on the allowlist. The manifest still excludes itself.
+Earlier `check:release` FAIL rows below stay historical.
+
+Cancellation is checked between audit phases and between pages. A
+`toolDocumentMap` enumeration that has already started may finish.
+
+| Command                 | Result                                                                                                                               |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `npm test`              | PASS. 550 passed, 0 failed, 0 skipped. Node v22.23.4. About 4.99 seconds.                                                            |
+| `npm run format:check`  | PASS. Prettier 3.8.3.                                                                                                                |
+| `npm run check:release` | PASS. 203 files visited, 0 errors, after the allowlist refresh. The manifest excludes itself. Earlier FAIL rows below are unchanged. |
+| Mac Word                | NATIVE_NOT_RUN                                                                                                                       |
+
 ## Complete-read probe check — 2026-10-25
 
 `observationsMatch` used to slice the closing probe to the length of the pages
