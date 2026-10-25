@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.2.0-preview.4 — 2026-10-25 — complete audit reads match the full probe
+
+- A finished Current read must match the closing probe's full paragraph list:
+  count, order, and text. A shorter or empty finished read is not
+  `evidence_probe_matched`. An unfinished page still matches only the range
+  already read, and the unread coverage gap stays.
+- Cancellation is checked between audit phases and between pages.
+  `toolDocumentMap` may finish an enumeration that has already started. A
+  cancel is not a claim that no further `Word.run` can start at any moment.
+
 ## 0.2.0-preview.4 — 2026-10-25 — redline audit review fixes
 
 - Kept Current/Original pages and requested range OOXML on the audit snapshot.
@@ -12,7 +22,8 @@
   `evidence_sha256` covers the default MCP projection that omits raw OOXML.
   Both hashes exclude themselves.
 - The operation-queue cancel guard is checked between audit phases and pages.
-  Cancellation stops the audit immediately and does not block a later task.
+  A later task can still run. `toolDocumentMap` may finish an enumeration
+  already in progress.
 
 ## 0.2.0-preview.4 — 2026-10-24 — single-document redline audit
 

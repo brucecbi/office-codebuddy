@@ -3,6 +3,35 @@
 P1A only: a read-only audit foundation for one Word document with multi-author
 revisions. Later phases in `docs/REDLINE-REVIEW-PLAN.md` are not started.
 
+## Complete-read probe check — 2026-10-25
+
+`observationsMatch` used to slice the closing probe to the length of the pages
+already read, including when the read was finished. A finished Current read of
+only P1=`A` therefore matched a probe of P1=`A`, P2=`C`.
+
+A finished read now compares the whole Current paragraph list: count, order,
+and text. An unfinished read still compares only the obtained range, and its
+coverage entry stays `paging_complete: false`.
+
+Regressions:
+
+- `a complete read shorter than the closing probe does not match`
+- `an empty complete read does not match a non-empty probe`
+- `a complete read that agrees with the closing probe matches`
+- `an unfinished page that disagrees with the closing probe is not a probe match`
+  still covers the partial match and the partial mismatch
+
+Cancellation wording is corrected in the same commit. The guard is honored
+between audit phases and between pages. `toolDocumentMap` may finish the
+`Word.run` calls inside an enumeration that has already started.
+
+| Command                 | Result                                                                                                                                                                                 |
+| ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm test`              | PASS. 550 passed, 0 failed, 0 skipped. About 5.16 seconds. Node v22.23.4.                                                                                                              |
+| `npm run format:check`  | PASS. Prettier 3.8.3, after this section was formatted.                                                                                                                                |
+| `npm run check:release` | FAIL. 203 files visited, 20 errors: 16 `hash-mismatch` and 4 `not-allowlisted`. No missing, symlink, or credential finding. The manifest was not regenerated. Not a product-test pass. |
+| Mac Word                | NATIVE_NOT_RUN                                                                                                                                                                         |
+
 ## Review follow-up — 2026-10-25
 
 Four findings on `cursor/redline-review-p1a-7aa1`. P1B was not started.
@@ -27,10 +56,12 @@ probe is not a probe match`. Before and after probes are `A`, the page read
    `default and explicit OOXML projections hash the assembler result the MCP
 bridge returns`. It runs `buildRedlineAudit` through `createOfficeBridgeMcp`
    for both `{}` and `{ include_ooxml: true }`.
-4. The queue `guard` is passed into `toolAuditRedline` and checked before each
-   probe section, between phases, and before each story or OOXML page.
-   `CANCELLED_OR_EXPIRED` is rethrown. Regression: `cancelling an audit starts
-no further Word.run and a later queued task still runs`.
+4. The queue `guard` is passed into `toolAuditRedline` and checked between
+   phases and before each story or OOXML page. `CANCELLED_OR_EXPIRED` is
+   rethrown at the next check. `toolDocumentMap` may still finish `Word.run`
+   calls inside an enumeration that has already started. The regression is
+   `cancellation between audit phases stops the next read and a later queued
+task still runs`.
 
 | Command                 | Result                                                                                                                                                                                 |
 | ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

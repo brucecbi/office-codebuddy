@@ -714,6 +714,91 @@ test("an unfinished page that disagrees with the closing probe is not a probe ma
   assert.equal(disagreed.complete_file_audit, false);
 });
 
+function closedRead(paragraphs, snapshot_id = "snap-1") {
+  return base({
+    snapshot_id,
+    story_reads: [
+      {
+        target: { story: "body" },
+        version: "Current",
+        pages: [
+          {
+            offset: 0,
+            next_offset: null,
+            total: paragraphs.length,
+            paragraphs,
+          },
+        ],
+      },
+    ],
+    revision_reads: [{ target: { story: "body" }, revisions: [], enumeration_complete: false }],
+    comment_reads: [{ target: { story: "body" }, comments: [] }],
+  });
+}
+
+test("a complete read shorter than the closing probe does not match", () => {
+  const closing = probe({
+    paragraphs: [
+      { id: "P1", text: "A" },
+      { id: "P2", text: "C" },
+    ],
+  });
+  const result = buildRedlineAudit({
+    ...closedRead([{ index: 0, id: "P1", text: "A" }], "snap-short"),
+    consistency: { before: closing, after: closing, prior_snapshot: null },
+  });
+  const current = result.coverage.entries.find((entry) => entry.version === "Current");
+  assert.equal(current.paging_complete, true);
+  assert.equal(result.snapshot.consistency.evidence_probe_matched, false);
+  assert.notEqual(result.snapshot.consistency.state, "limited_reread_match");
+  assert.equal(result.complete_file_audit, false);
+});
+
+test("an empty complete read does not match a non-empty probe", () => {
+  const closing = probe({ paragraphs: [{ id: "P1", text: "A" }] });
+  const result = buildRedlineAudit({
+    ...closedRead([], "snap-empty"),
+    consistency: { before: closing, after: closing, prior_snapshot: null },
+  });
+  const current = result.coverage.entries.find((entry) => entry.version === "Current");
+  assert.equal(current.paging_complete, true);
+  assert.equal(current.status, "read");
+  assert.equal(result.story_pages[0].paragraphs.length, 0);
+  assert.equal(result.snapshot.consistency.evidence_probe_matched, false);
+  assert.equal(result.complete_file_audit, false);
+});
+
+test("a complete read that agrees with the closing probe matches", () => {
+  const paragraphs = [
+    { id: "P1", text: "A" },
+    { id: "P2", text: "C" },
+  ];
+  const closing = probe({ paragraphs });
+  const read = [
+    { index: 0, id: "P1", text: "A" },
+    { index: 1, id: "P2", text: "C" },
+  ];
+  const result = buildRedlineAudit({
+    ...closedRead(read, "snap-agree"),
+    consistency: { before: closing, after: closing, prior_snapshot: null },
+  });
+  const current = result.coverage.entries.find((entry) => entry.version === "Current");
+  assert.equal(current.paging_complete, true);
+  assert.equal(result.snapshot.consistency.evidence_probe_matched, true);
+  assert.equal(result.complete_file_audit, false);
+  const reversed = buildRedlineAudit({
+    ...closedRead(
+      [
+        { index: 0, id: "P2", text: "C" },
+        { index: 1, id: "P1", text: "A" },
+      ],
+      "snap-order",
+    ),
+    consistency: { before: closing, after: closing, prior_snapshot: null },
+  });
+  assert.equal(reversed.snapshot.consistency.evidence_probe_matched, false);
+});
+
 test("default and explicit OOXML projections hash the assembler result the MCP bridge returns", async () => {
   const audit = buildRedlineAudit(
     base({

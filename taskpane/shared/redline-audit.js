@@ -347,12 +347,17 @@ function observationsMatch(after, input) {
     if (read?.version !== "Current") continue;
     const pages = combinePages(read.pages || []);
     if (pages.status !== "read") return false;
-    // An unfinished page is still evidence. Compare the pages already obtained
-    // with the same slice of the closing probe; do not skip that check.
     const collected = pages.paragraphs.map((paragraph) => ({
       id: paragraph.id ?? null,
       text: paragraph.text ?? null,
     }));
+    if (pages.paging_complete) {
+      // A finished read is the whole Current list: count, order, and text.
+      if (canonicalJson(collected) !== canonicalJson(after.paragraphs)) return false;
+      continue;
+    }
+    // An unfinished page still has to match the slice already read. The
+    // coverage gap for the unread remainder stays on the coverage report.
     const start = Number.isInteger(pages.paragraphs[0]?.index)
       ? pages.paragraphs[0].index
       : (read.pages?.[0]?.offset ?? 0);

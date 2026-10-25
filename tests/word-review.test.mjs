@@ -798,7 +798,9 @@ test("optional range OOXML paging stays incomplete and still performs no write",
   assert.equal(f.writes, 0);
 });
 
-test("cancelling an audit starts no further Word.run and a later queued task still runs", async () => {
+test("cancellation between audit phases stops the next read and a later queued task still runs", async () => {
+  // The guard is checked between phases and pages. toolDocumentMap can still
+  // finish the Word.run calls already inside its enumeration before it returns.
   const f = fixture();
   const queue = createOperationQueue();
   const original = globalThis.Word.run;
